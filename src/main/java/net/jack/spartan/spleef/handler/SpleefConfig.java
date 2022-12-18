@@ -1,4 +1,4 @@
-package net.jack.spartan.spleef;
+package net.jack.spartan.spleef.handler;
 
 import net.jack.spartan.SpartanCore;
 import org.bukkit.Bukkit;

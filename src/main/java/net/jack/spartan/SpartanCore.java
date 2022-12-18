@@ -3,11 +3,9 @@ package net.jack.spartan;
 
 import lombok.Getter;
 import net.jack.spartan.crews.commandmanager.CrewCommandManager;
-import net.jack.spartan.crews.commands.CrewCreate;
 import net.jack.spartan.crews.listeners.CrewListeners;
 import net.jack.spartan.serverutils.SpartanBoard;
-import net.jack.spartan.spleef.SpleefConfig;
-import net.jack.spartan.spleef.SpleefHandler;
+import net.jack.spartan.spleef.handler.SpleefHandler;
 import net.jack.spartan.utilities.Config;
 import net.jack.spartan.utilities.PAPIExpansions;
 import org.bukkit.Bukkit;

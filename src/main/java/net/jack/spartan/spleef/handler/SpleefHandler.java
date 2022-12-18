@@ -1,6 +1,7 @@
-package net.jack.spartan.spleef;
+package net.jack.spartan.spleef.handler;
 
 import net.jack.spartan.SpartanCore;
+import net.jack.spartan.spleef.instance.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
