@@ -34,13 +34,13 @@ public class SpartanBoard implements Listener {
         Score space1 = obj.getScore(" ");
         space1.setScore(11);
 
-        Score field2 = obj.getScore(CC.translate("&ePoints: &c" + player.getName() + " &f<Points>"));
+        Score field2 = obj.getScore(CC.translate("&ePoints: &c" + player.getName() + " &f(%spartan_points%)"));
         field2.setScore(10);
 
         Score space2 = obj.getScore("  ");
         space2.setScore(9);
 
-        Score field3 = obj.getScore(CC.translate("&eCrew: &7<Crew>" ));
+        Score field3 = obj.getScore(CC.translate("&eCrew: &7%spartan_crew%" ));
         field3.setScore(8);
 
         Score space3 = obj.getScore("   ");

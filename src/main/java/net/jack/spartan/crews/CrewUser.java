@@ -21,9 +21,9 @@ public class CrewUser {
 
     public void setUserCrew(Player player, String crew, String role) {
         this.core.getCrewUserConfiguration().set("Player." + player.getUniqueId() + ".crew", crew);
-        this.core.getCrewUserConfiguration().set("Player." + player.getUniqueId() + ".crew", role);
+        this.core.getCrewUserConfiguration().set("Player." + player.getUniqueId() + ".role", role);
 
-        new Config(this.core.getCrews(), this.core.getCrewConfiguration(), core);
+        new Config(this.core.getCrewUser(), this.core.getCrewUserConfiguration(), core);
     }
 
     public String getUserCrewRole(Player player) {
@@ -33,6 +33,26 @@ public class CrewUser {
     public void leaveCrew(Player player) {
         this.core.getCrewUserConfiguration().set("Player." + player.getUniqueId(), null);
 
-        new Config(this.core.getCrews(), this.core.getCrewConfiguration(), core);
+        new Config(this.core.getCrewUser(), this.core.getCrewUserConfiguration(), core);
+    }
+
+    public int getUserPoints(Player player) {
+        return this.core.getCrewUserConfiguration().getInt("Player." + player.getUniqueId() + ".points");
+    }
+
+    public void setUserPoints(Player player, int amount) {
+        this.core.getCrewUserConfiguration().set("Player." + player.getUniqueId() + ".points", amount);
+    }
+
+    public boolean userExists(Player player) {
+        return this.core.getCrewUserConfiguration().contains("Player." + player.getUniqueId());
+    }
+
+    public void createUser(Player player) {
+        this.core.getCrewUserConfiguration().set("Player." + player.getUniqueId() + ".points", 0);
+        new Config(this.core.getCrewUser(), this.core.getCrewUserConfiguration(), core);
     }
 }
+
+
+

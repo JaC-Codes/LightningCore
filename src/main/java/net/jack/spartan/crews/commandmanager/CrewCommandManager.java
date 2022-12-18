@@ -2,6 +2,7 @@ package net.jack.spartan.crews.commandmanager;
 
 import net.jack.spartan.SpartanCore;
 import net.jack.spartan.crews.commands.CrewCreate;
+import net.jack.spartan.crews.commands.CrewDisband;
 import net.jack.spartan.utilities.CC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +19,7 @@ public class CrewCommandManager implements CommandExecutor {
     public CrewCommandManager(SpartanCore core) {
         this.core = core;
         subCommands.add(new CrewCreate(core));
+        subCommands.add(new CrewDisband(core));
     }
 
     @Override
@@ -34,7 +36,7 @@ public class CrewCommandManager implements CommandExecutor {
                     }
                 }
             }else if(args.length == 0){
-                for (final String i : this.core.getCrewSettingsConfiguration().getStringList("Crew-Settings.usage")) {
+                for (final String i : this.core.getCrewSettingsConfiguration().getStringList("Usage")) {
                     player.sendMessage(CC.translate(i));
                 }
             }

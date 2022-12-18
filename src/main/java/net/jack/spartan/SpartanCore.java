@@ -4,8 +4,10 @@ package net.jack.spartan;
 import lombok.Getter;
 import net.jack.spartan.crews.commandmanager.CrewCommandManager;
 import net.jack.spartan.crews.commands.CrewCreate;
+import net.jack.spartan.crews.listeners.CrewListeners;
 import net.jack.spartan.serverutils.SpartanBoard;
 import net.jack.spartan.utilities.Config;
+import net.jack.spartan.utilities.PAPIExpansions;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,6 +33,18 @@ public class SpartanCore extends JavaPlugin {
         instance = this;
         this.Config();
         long duration = System.currentTimeMillis();
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+            try{
+                getLogger().info("Trying to load PAPI expansion...");
+                new PAPIExpansions(this).register();
+                getLogger().info("Success!");
+            } catch (Exception e){
+                getLogger().severe("Failed!");
+                e.printStackTrace();
+            }
+        }
+
         String prefix = "§3[" + getDescription().getName() + " " + getDescription().getVersion() + "] ";
         Bukkit.getConsoleSender().sendMessage(prefix + "§6=== ENABLE START ===");
         Bukkit.getConsoleSender().sendMessage(prefix + "§aLoading §dListeners");
@@ -50,6 +64,7 @@ public class SpartanCore extends JavaPlugin {
     private void registerEvents() {
         PluginManager manager = Bukkit.getPluginManager();
         manager.registerEvents(new SpartanBoard(this), this);
+        manager.registerEvents(new CrewListeners(this), this);
     }
 
     private void Config() {
