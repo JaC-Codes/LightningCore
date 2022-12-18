@@ -6,6 +6,8 @@ import net.jack.spartan.crews.commandmanager.CrewCommandManager;
 import net.jack.spartan.crews.commands.CrewCreate;
 import net.jack.spartan.crews.listeners.CrewListeners;
 import net.jack.spartan.serverutils.SpartanBoard;
+import net.jack.spartan.spleef.SpleefConfig;
+import net.jack.spartan.spleef.SpleefHandler;
 import net.jack.spartan.utilities.Config;
 import net.jack.spartan.utilities.PAPIExpansions;
 import org.bukkit.Bukkit;
@@ -19,17 +21,22 @@ import java.io.File;
 @Getter
 public class SpartanCore extends JavaPlugin {
 
+    private SpleefHandler spleefHandler;
+
     private static SpartanCore instance;
     private final File crews = new File(getDataFolder(), "crews.yml");
     private final File crewSettings = new File(getDataFolder(), "crewsettings.yml");
     private final File crewUser = new File(getDataFolder(), "crewuser.yml");
+    private final File spleef = new File(getDataFolder(), "spleef.yml");
 
 
+    private final FileConfiguration spleefConfiguration = YamlConfiguration.loadConfiguration(spleef);
     private final FileConfiguration crewConfiguration = YamlConfiguration.loadConfiguration(crews);
     private final FileConfiguration crewUserConfiguration = YamlConfiguration.loadConfiguration(crewUser);
     private final FileConfiguration crewSettingsConfiguration = YamlConfiguration.loadConfiguration(crewSettings);
 
     public void onEnable() {
+        spleefHandler = new SpleefHandler(this);
         instance = this;
         this.Config();
         long duration = System.currentTimeMillis();
@@ -67,6 +74,10 @@ public class SpartanCore extends JavaPlugin {
         manager.registerEvents(new CrewListeners(this), this);
     }
 
+    public SpleefHandler getSpleefHandler() {
+        return spleefHandler;
+    }
+
     private void Config() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
@@ -74,12 +85,14 @@ public class SpartanCore extends JavaPlugin {
         new Config(crews, crewConfiguration, "crews.yml", this);
         new Config(crewSettings, crewSettingsConfiguration, "crewsettings.yml", this);
         new Config(crewUser, crewUserConfiguration, "crewuser.yml", this);
+        new Config(spleef, spleefConfiguration, "spleef.yml", this);
     }
 
 
 
 
     public void onDisable() {
+        instance = null;
         long duration = System.currentTimeMillis();
         String prefix = "§3[" + getDescription().getName() + " " + getDescription().getVersion() + "] ";
         Bukkit.getConsoleSender().sendMessage(prefix + "§6=== DISABLING ===");
