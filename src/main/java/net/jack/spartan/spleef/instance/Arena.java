@@ -51,6 +51,7 @@ public class Arena {
             players.clear();
         }
 
+        sendTitle("", "");
         state = GameState.RECRUITING;
         countdown.cancel();
         countdown = new Countdown(core, this);
@@ -83,6 +84,18 @@ public class Arena {
 
         players.remove(player.getUniqueId());
         player.teleport(spleefConfig.getLobbySpawn());
+        player.sendTitle("", "");
+
+        if (state == GameState.COUNTDOWN && players.size() < spleefConfig.getRequiredPlayers()) {
+            sendMessage(CC.translate("Not enough players. Countdown cancelled."));
+            reset(false);
+            return;
+        }
+
+        if (state == GameState.LIVE && players.size() < spleefConfig.getRequiredPlayers()) {
+            sendMessage(CC.translate("Game has been ended. Too many players quit."));
+            reset(false);
+        }
     }
 
     public int getId() {

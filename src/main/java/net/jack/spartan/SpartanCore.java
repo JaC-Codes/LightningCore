@@ -5,7 +5,11 @@ import lombok.Getter;
 import net.jack.spartan.crews.commandmanager.CrewCommandManager;
 import net.jack.spartan.crews.listeners.CrewListeners;
 import net.jack.spartan.serverutils.SpartanBoard;
+import net.jack.spartan.spleef.commands.SpleefCommand;
 import net.jack.spartan.spleef.handler.SpleefHandler;
+import net.jack.spartan.spleef.instance.Arena;
+import net.jack.spartan.spleef.listeners.ConnectListener;
+import net.jack.spartan.spleef.listeners.SpleefListener;
 import net.jack.spartan.utilities.Config;
 import net.jack.spartan.utilities.PAPIExpansions;
 import org.bukkit.Bukkit;
@@ -20,6 +24,7 @@ import java.io.File;
 public class SpartanCore extends JavaPlugin {
 
     private SpleefHandler spleefHandler;
+    private Arena arena;
 
     private static SpartanCore instance;
     private final File crews = new File(getDataFolder(), "crews.yml");
@@ -64,16 +69,23 @@ public class SpartanCore extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("crew").setExecutor(new CrewCommandManager(this));
+        getCommand("spleef").setExecutor(new SpleefCommand(this));
     }
 
     private void registerEvents() {
         PluginManager manager = Bukkit.getPluginManager();
         manager.registerEvents(new SpartanBoard(this), this);
         manager.registerEvents(new CrewListeners(this), this);
+        manager.registerEvents(new SpleefListener(arena), this);
+        manager.registerEvents(new ConnectListener(this), this);
     }
 
     public SpleefHandler getSpleefHandler() {
         return spleefHandler;
+    }
+
+    public Arena getArena() {
+        return arena;
     }
 
     private void Config() {

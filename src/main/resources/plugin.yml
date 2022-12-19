@@ -6,3 +6,5 @@ main: net.jack.spartan.SpartanCore
 commands:
   crew:
     description: Crews
+  spleef:
+    description: Spleef

@@ -20,18 +20,18 @@ public class SpleefHandler {
         this.core = core;
         FileConfiguration config = this.core.getSpleefConfiguration();
 
-        for (String m : config.getConfigurationSection("arenas.").getKeys(false)) {
-            String worldString = this.core.getSpleefConfiguration().getString("arenas." + m + ".world");
+        for (String m : config.getConfigurationSection("arenas").getKeys(false)) {
+            String worldString = config.getString("arenas." + m + ".world");
             if (worldString == null) {
                 System.out.println("World null");
             }
             arenas.add(new Arena(Integer.parseInt(m),
                     new Location(Bukkit.getWorld(worldString),
-                    this.core.getSpleefConfiguration().getDouble("arenas." + m + "x"),
-                    this.core.getSpleefConfiguration().getDouble("arenas." + m + "y"),
-                    this.core.getSpleefConfiguration().getDouble("arenas." + m + "z"),
-                    (float) this.core.getSpleefConfiguration().getDouble("arenas." + m + "yaw"),
-                    (float) this.core.getSpleefConfiguration().getDouble("arenas." + m + "pitch")), core));
+                    this.core.getSpleefConfiguration().getDouble("arenas." + m + ".x"),
+                    this.core.getSpleefConfiguration().getDouble("arenas." + m + ".y"),
+                    this.core.getSpleefConfiguration().getDouble("arenas." + m + ".z"),
+                    (float) this.core.getSpleefConfiguration().getDouble("arenas." + m + ".yaw"),
+                    (float) this.core.getSpleefConfiguration().getDouble("arenas." + m + ".pitch")), core));
         }
     }
 
@@ -39,7 +39,7 @@ public class SpleefHandler {
         return arenas;
     }
 
-    public Arena getArenas(Player player) {
+    public Arena getArena(Player player) {
         for (Arena arena : arenas) {
             if (arena.getPlayers().contains(player.getUniqueId())) {
                 return arena;
@@ -48,7 +48,7 @@ public class SpleefHandler {
         return null;
     }
 
-    public Arena getArenas(int id) {
+    public Arena getArena(int id) {
         for (Arena arena : arenas) {
             if (arena.getId() == id) {
                 return arena;

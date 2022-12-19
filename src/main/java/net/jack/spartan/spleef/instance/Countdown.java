@@ -39,6 +39,8 @@ public class Countdown extends BukkitRunnable {
             arena.sendMessage(CC.translate("&bGame will start in &c" + countdownSeconds + " &bsecond" + (countdownSeconds == 1 ? "" : "s") + "."));
         }
 
+        arena.sendTitle(CC.translate("&b&l" + countdownSeconds + " second" + (countdownSeconds == 1 ? "" : "s")), "&7until game commences.");
+
         countdownSeconds--;
 
     }

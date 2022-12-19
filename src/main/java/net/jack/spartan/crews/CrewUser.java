@@ -16,7 +16,7 @@ public class CrewUser {
         if (!this.core.getCrewUserConfiguration().contains("Player." + player.getUniqueId())) {
             return null;
         }
-        return this.core.getCrewUserConfiguration().getString("Player." + player.getUniqueId()) + ".crew";
+        return this.core.getCrewUserConfiguration().getString("Player." + player.getUniqueId() + ".crew");
     }
 
     public void setUserCrew(Player player, String crew, String role) {

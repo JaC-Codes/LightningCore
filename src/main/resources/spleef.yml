@@ -1,3 +1,13 @@
+Usage:
+  - "&b---------------------------------------------------"
+  - ""
+  - "&b/Spleef join <id> &7- &fJoin a spleef game"
+  - " "
+  - "&b/Spleef list &7- &fList the spleef arenas"
+  - " "
+  - "&b/Spleef leave &7- &fLeave the spleef game"
+  - " "
+  - "&b---------------------------------------------------"
 required-players: 2
 countdown-seconds: 30
 lobby-spawn:
