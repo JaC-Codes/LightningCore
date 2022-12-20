@@ -1,6 +1,7 @@
 package net.jack.spartan.crews;
 
 import net.jack.spartan.SpartanCore;
+import net.jack.spartan.utilities.CC;
 import net.jack.spartan.utilities.Config;
 import org.bukkit.entity.Player;
 
@@ -49,4 +50,19 @@ public class Crews {
         new Config(this.core.getCrews(), this.core.getCrewConfiguration(), core);
     }
 
+    public void listCrews(Player player) {
+        player.sendMessage(CC.translate("&b---------------------------------------------------"));
+        player.sendMessage(" ");
+        player.sendMessage(CC.translate("&7List of crews:"));
+        for (int i = 0; i < 6; i++) {
+            for (String crews : this.core.getCrewConfiguration().getStringList("Crew." + crew)) {
+                player.sendMessage(CC.translate("&7" + crews));
+                player.sendMessage(" ");
+            }
+        }
+        player.sendMessage(" ");
+        player.sendMessage(CC.translate("&b---------------------------------------------------"));
+    }
 }
+
+

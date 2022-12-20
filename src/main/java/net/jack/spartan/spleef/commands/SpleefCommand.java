@@ -29,7 +29,7 @@ public class SpleefCommand implements CommandExecutor {
             if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
                 player.sendMessage(CC.translate("&bThese are the available arenas: "));
                 for (Arena arena : core.getSpleefHandler().getArenas()) {
-                    player.sendMessage("&f&l- " + arena.getId() + "&b(" + arena.getState() + "&b)");
+                    player.sendMessage(CC.translate("&f&l- " + arena.getId() + " &b(" + arena.getState() + "&b)"));
                 }
 
             } else if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
@@ -96,7 +96,10 @@ public class SpleefCommand implements CommandExecutor {
 
     public String usage(Player player) {
 
-        player.sendMessage(CC.translate(this.core.getSpleefConfiguration().getStringList("Usage").toString()));
+        for (String usage : this.core.getSpleefConfiguration().getStringList("Usage")) {
+            player.sendMessage(CC.translate(usage));
+        }
+
         return null;
     }
 }

@@ -32,7 +32,7 @@ public class CrewDisband extends SubCommand {
         String crewName = crewUser.getUserCrew(player);
         String crewRole = crewUser.getUserCrewRole(player);
         if (crewName == null) {
-            player.sendMessage(CC.translate(this.core.getCrewSettingsConfiguration().getString("messages.no-team")));
+            player.sendMessage(CC.translate(this.core.getCrewSettingsConfiguration().getString("messages.no-crew")));
         }
         if (!crewRole.equalsIgnoreCase("boss")) {
             player.sendMessage(CC.translate(this.core.getCrewSettingsConfiguration().getString("messages.boss-permission")));

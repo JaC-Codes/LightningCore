@@ -3,6 +3,8 @@ package net.jack.spartan.crews.commandmanager;
 import net.jack.spartan.SpartanCore;
 import net.jack.spartan.crews.commands.CrewCreate;
 import net.jack.spartan.crews.commands.CrewDisband;
+import net.jack.spartan.crews.commands.CrewLeave;
+import net.jack.spartan.crews.commands.CrewList;
 import net.jack.spartan.utilities.CC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,6 +22,8 @@ public class CrewCommandManager implements CommandExecutor {
         this.core = core;
         subCommands.add(new CrewCreate(core));
         subCommands.add(new CrewDisband(core));
+        subCommands.add(new CrewLeave(core));
+        subCommands.add(new CrewList(core));
     }
 
     @Override

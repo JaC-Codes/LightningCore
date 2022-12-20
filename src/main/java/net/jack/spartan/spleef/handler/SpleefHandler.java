@@ -18,10 +18,9 @@ public class SpleefHandler {
 
     public SpleefHandler(SpartanCore core) {
         this.core = core;
-        FileConfiguration config = this.core.getSpleefConfiguration();
 
-        for (String m : config.getConfigurationSection("arenas").getKeys(false)) {
-            String worldString = config.getString("arenas." + m + ".world");
+        for (String m : this.core.getSpleefConfiguration().getConfigurationSection("arenas").getKeys(false)) {
+            String worldString = this.core.getSpleefConfiguration().getString("arenas." + m + ".world");
             if (worldString == null) {
                 System.out.println("World null");
             }
