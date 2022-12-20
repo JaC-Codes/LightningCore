@@ -103,6 +103,7 @@ public class SpartanCore extends JavaPlugin {
 
     public void onDisable() {
         instance = null;
+        this.Config();
         long duration = System.currentTimeMillis();
         String prefix = "§3[" + getDescription().getName() + " " + getDescription().getVersion() + "] ";
         Bukkit.getConsoleSender().sendMessage(prefix + "§6=== DISABLING ===");
