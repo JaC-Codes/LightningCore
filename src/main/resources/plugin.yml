@@ -1,10 +1,14 @@
-name: SpartanCore
+name: LightningCore
 api-version: 1.16
 Author: Jack/Snowey
 version: 0.1
-main: net.jack.spartan.SpartanCore
+main: net.jack.lightning.LightningCore
 commands:
   crew:
     description: Crews
   spleef:
     description: Spleef
+  points:
+    description: Points
+  crewadmin:
+    description: Admin commands for crew
