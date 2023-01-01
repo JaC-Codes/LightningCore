@@ -12,3 +12,11 @@ commands:
     description: Points
   crewadmin:
     description: Admin commands for crew
+  killstop:
+    description: Top kills
+  lc:
+    description: Lightning Core
+  harvesterhoe:
+    description: Harvester Hoe
+    aliases:
+      - hh

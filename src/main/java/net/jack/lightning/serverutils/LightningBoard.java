@@ -1,5 +1,6 @@
 package net.jack.lightning.serverutils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Bukkit;
@@ -10,11 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.*;
 
-public class SpartanBoard implements Listener {
+public class LightningBoard implements Listener {
 
     private final LightningCore core;
 
-    public SpartanBoard(LightningCore core) {
+    public LightningBoard(LightningCore core) {
         this.core = core;
     }
 
@@ -58,13 +59,13 @@ public class SpartanBoard implements Listener {
         Team crew = board.registerNewTeam("crew");
         crew.addEntry(ChatColor.AQUA.toString());
         crew.setPrefix(CC.translate("&eCrew: "));
-        crew.setSuffix(CC.translate("&7%spartan_crew%"));
+        crew.setSuffix(CC.translate(PlaceholderAPI.setPlaceholders(player, "&7" + "%lightning_crew%")));
         obj.getScore(ChatColor.AQUA.toString()).setScore(8);
 
         Team points = board.registerNewTeam("points");
         points.addEntry(ChatColor.BOLD.toString());
         points.setPrefix(CC.translate("&ePoints: "));
-        points.setSuffix(CC.translate("&c" + player.getName() + " &f(%lightning_points%)"));
+        points.setSuffix(CC.translate(PlaceholderAPI.setPlaceholders(player, "&c" + player.getName() + " &f(" + "%lightning_points%" + ")")));
         obj.getScore(ChatColor.BOLD.toString()).setScore(10);
 
         player.setScoreboard(board);

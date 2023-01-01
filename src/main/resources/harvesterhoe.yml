@@ -1,0 +1,9 @@
+HarvesterHoe:
+  item:
+    name: "&f* &6Harvester Hoe &f*"
+    lore:
+      - ""
+      - "&f(Right click to open menu)"
+      - ""
+      - "&7Upgrade your hoe with essence to unlock new"
+      - "&7features for your hoe."

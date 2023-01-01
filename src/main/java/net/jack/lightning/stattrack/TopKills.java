@@ -1,14 +1,14 @@
 package net.jack.lightning.stattrack;
 
 import net.jack.lightning.LightningCore;
+import net.jack.lightning.utilities.CC;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 import static java.util.Collections.reverseOrder;
-import static java.util.Collections.sort;
 
 public class TopKills {
 
@@ -22,42 +22,42 @@ public class TopKills {
         this.statTrack = new StatTrack(core);
     }
 
-    public void topKillTracker(OfflinePlayer player) {
+    public void topKillTracker() {
         if (this.core.getStatTrackConfiguration().getConfigurationSection("Player.") == null) {
             return;
         }
-        for (String i : this.core.getStatTrackConfiguration().getConfigurationSection("Player.").getKeys(false)) {
-            int kills = this.core.getStatTrackConfiguration().getInt("Player." + player.getName() + ".kills");
-            String name = statTrack.getPlayer(player.getName());
-            topkills.put(name, kills);
+
+        for (String playerName : this.core.getStatTrackConfiguration().getConfigurationSection("Player").getKeys(false)) {
+            int kills = this.core.getStatTrackConfiguration().getInt("Player." + playerName + ".kills");
+            topkills.put(playerName, kills);
         }
     }
 
-    public void sortTop() {
+
+    public void sortTop(Player player) {
         List<Map.Entry<String, Integer>> entrySet = topkills.entrySet().stream().limit(3).sorted(reverseOrder
                 (Map.Entry.comparingByValue())).toList();
 
+        player.sendMessage("\n");
+        player.sendMessage(CC.translate("&6&lTop Kills Leaderboard"));
+        player.sendMessage("\n");
+
         for (Map.Entry<String, Integer> entry : entrySet) {
-            System.out.println(entry.getValue());
+            player.sendMessage(CC.translate("&f" + (entry.getKey()) + "&7:" + entry.getValue()));
+            player.sendMessage("\n");
         }
 
     }
 
-    public void updateLeaderboard() {
-
-    }
 
     public void killTopUpdater() {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (OfflinePlayer player: Bukkit.getOfflinePlayers()) {
-                    topKillTracker(player);
-                    sortTop();
-                }
-                }
-            }.runTaskTimer(core, 1200L,20L);
-        }
-
+                topKillTracker();
+            }
+        }.runTaskTimer(core, 1200L, 1200L);
     }
+
+}
 
