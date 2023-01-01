@@ -8,6 +8,8 @@ import net.jack.lightning.crews.admincommands.AdminPoints;
 import net.jack.lightning.crews.commandmanager.CrewCommandManager;
 import net.jack.lightning.crews.commands.Points;
 import net.jack.lightning.crews.listeners.CrewListeners;
+import net.jack.lightning.harvesterhoe.HoeHandler;
+import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
 import net.jack.lightning.serverutils.LightningBoard;
 import net.jack.lightning.stattrack.TopKills;
 import net.jack.lightning.stattrack.commands.Leaderboard;
@@ -82,6 +84,7 @@ public class LightningCore extends JavaPlugin {
         getCommand("crewadmin").setExecutor(new AdminPoints(this));
         getCommand("killstop").setExecutor(new Leaderboard(this));
         getCommand("lc").setExecutor(new Reloader(this));
+        getCommand("harvesterhoe").setExecutor(new CommandManager(this));
     }
 
     private void registerEvents() {
@@ -89,6 +92,7 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new LightningBoard(this), this);
         manager.registerEvents(new CrewListeners(this), this);
         manager.registerEvents(new Events(this), this);
+        manager.registerEvents(new HoeHandler(this), this);
     }
 
     private void Config() {

@@ -25,17 +25,17 @@ public class CommandManager implements CommandExecutor {
     @SuppressWarnings("ALL")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player){
+        if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (args.length > 0){
-                for (int i = 0; i < getSubcommands().size(); i++){
-                    if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
+            if (args.length > 0) {
+                for (int i = 0; i < getSubcommands().size(); i++) {
+                    if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
                         getSubcommands().get(i).perform(player, args);
                     }
                 }
-            }else if(args.length == 0){
-                for (final String i : this.core.getCrewSettingsConfiguration().getStringList("Usage")) {
+            } else if (args.length == 0) {
+                for (final String i : this.core.getHarvesterHoeConfiguration().getStringList("Usage")) {
                     player.sendMessage(CC.translate(i));
                 }
             }
@@ -46,7 +46,7 @@ public class CommandManager implements CommandExecutor {
         return true;
     }
 
-    public ArrayList<SubCommand> getSubcommands(){
+    public ArrayList<SubCommand> getSubcommands() {
         return subCommands;
     }
 }

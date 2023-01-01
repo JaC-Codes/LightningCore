@@ -7,3 +7,35 @@ HarvesterHoe:
       - ""
       - "&7Upgrade your hoe with essence to unlock new"
       - "&7features for your hoe."
+HoeMenu:
+  inventory:
+    size: 27
+    title: "&eLightningCore"
+    items:
+      0:
+        item: "FIRE_CHARGE"
+        name: "&c&lTokens"
+        lore:
+          - ""
+          - "&fToken Balance: &7%tokens%"
+        slot: 11
+      1:
+        item: "DIAMOND_HOE"
+        name: "&f&l** &6&lHarvester Hoe &f&l**"
+        lore:
+          - ""
+          - "&fClick to open the hoe menu"
+        slot: 13
+      2:
+        item: "CLAY_BALL"
+        name: "&b&lEssence"
+        lore:
+          - ""
+          - "&fEssence Balance: &7%essence%"
+        slot: 15
+Usage:
+  - "&7---------------------------------------------------"
+  - ""
+  - "&e/HarvesterHoe hoe give <player> <amount> &7- &fGive specified player a harvester hoe"
+  - " "
+  - "&7---------------------------------------------------"

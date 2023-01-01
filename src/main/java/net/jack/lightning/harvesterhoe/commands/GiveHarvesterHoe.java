@@ -1,7 +1,8 @@
 package net.jack.lightning.harvesterhoe.commands;
 
 import net.jack.lightning.LightningCore;
-import net.jack.lightning.harvesterhoe.ItemBuild;
+import net.jack.lightning.harvesterhoe.HoeHandler;
+import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
 import net.jack.lightning.harvesterhoe.commandsmanager.SubCommand;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Bukkit;
@@ -10,11 +11,11 @@ import org.bukkit.entity.Player;
 public class GiveHarvesterHoe extends SubCommand {
 
     private final LightningCore core;
-    private final ItemBuild itemBuild;
+    private final HoeHandler itemBuild;
 
     public GiveHarvesterHoe(LightningCore core) {
         this.core = core;
-        this.itemBuild = new ItemBuild(core);
+        this.itemBuild = new HoeHandler(core);
     }
 
     @Override
@@ -26,7 +27,9 @@ public class GiveHarvesterHoe extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if (args.length < 4) {
-            getUsage(player);
+                for (final String i : this.core.getHarvesterHoeConfiguration().getStringList("Usage")) {
+                    player.sendMessage(CC.translate(i));
+                }
             return;
         }
         if (!args[1].equalsIgnoreCase("give")) return;
@@ -37,10 +40,4 @@ public class GiveHarvesterHoe extends SubCommand {
 
         }
     }
-
-        @Override
-        public void getUsage (Player player){
-        player.sendMessage(CC.translate(core.getPrefix() + "&7Usage: &e/harvesterhoe give <player> <amount>"));
-
-        }
     }
