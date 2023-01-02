@@ -4,7 +4,10 @@ import net.jack.lightning.LightningCore;
 import net.jack.lightning.crews.CrewUser;
 import net.jack.lightning.harvesterhoe.essence.Essence;
 import net.jack.lightning.harvesterhoe.menus.HoeMenu;
+import net.jack.lightning.harvesterhoe.tokens.Tokens;
 import net.jack.lightning.utilities.CC;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -26,6 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.*;
 
@@ -42,6 +47,7 @@ public class HoeHandler implements Listener {
     private final CrewUser crewUser;
     private final NamespacedKey key2;
     private final Essence essence;
+    private final Tokens tokens;
 
     public HoeHandler(LightningCore core) {
         this.core = core;
@@ -50,6 +56,7 @@ public class HoeHandler implements Listener {
         this.crewUser = new CrewUser(core);
         this.key2 = new NamespacedKey(core, "confirm");
         this.essence = new Essence(core);
+        this.tokens = new Tokens(core);
     }
 
     public ItemStack harvesterHoe() {
@@ -127,6 +134,7 @@ public class HoeHandler implements Listener {
     public void onCaneBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
+        Material material = event.getBlock().getType();
         if (!block.getType().equals(Material.SUGAR_CANE)) return;
         Location broke = block.getLocation();
         ItemStack item = player.getEquipment().getItemInMainHand();
@@ -139,6 +147,31 @@ public class HoeHandler implements Listener {
                 Random random = new Random();
                 int randomEssence = random.nextInt(25, 300);
                 essence.addEssence(player, randomEssence);
+                int randomTokens = random.nextInt(1, 6);
+                tokens.addTokens(player, randomTokens);
+
+                int findAutoSell = this.core.getHarvesterHoeConfiguration().getInt("AutoSell.Cane-Sell-Amount");
+                Economy eco = this.core.getEconomy();
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < player.getInventory().getSize(); i++) {
+                            ItemStack item = player.getInventory().getItem(i);
+                            if (item == null) return;
+                            if (item.getType() == Material.SUGAR_CANE) {
+                                int scAmount = 0;
+                                scAmount = item.getAmount();
+                                item.setAmount(scAmount);
+                                player.getInventory().remove(item);
+                                int finalValue = scAmount * findAutoSell;
+                                EconomyResponse response = eco.depositPlayer(player, finalValue);
+                                player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount + " sugarcane for $" + finalValue));
+                            }
+
+                        }
+                    }
+                }.runTaskTimer(core, 600, 600);
+
             }
         }
     }

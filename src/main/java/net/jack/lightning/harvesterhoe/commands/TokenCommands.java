@@ -29,7 +29,7 @@ public class TokenCommands extends SubCommand {
     public void perform(Player player, String[] args) {
         if (!(player.hasPermission("spartancore.admin"))) return;
 
-        if (args.length == 0) {
+        if (args.length == 1) {
             tokens.usage(player);
         } else if (args[1].equalsIgnoreCase("set")) {
             if (args.length == 2) {

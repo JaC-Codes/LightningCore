@@ -18,10 +18,12 @@ import net.jack.lightning.stattrack.commands.Leaderboard;
 import net.jack.lightning.stattrack.listeners.Events;
 import net.jack.lightning.utilities.Config;
 import net.jack.lightning.utilities.PAPIExpansions;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -34,6 +36,8 @@ public class LightningCore extends JavaPlugin {
 
     private LightningCore instance;
     private Broadcaster broadcaster;
+    private Economy econ = null;
+
     private final File crews = new File(getDataFolder(), "crews.yml");
     private final File crewSettings = new File(getDataFolder(), "crewsettings.yml");
     private final File crewUser = new File(getDataFolder(), "crewuser.yml");
@@ -61,6 +65,10 @@ public class LightningCore extends JavaPlugin {
         broadcaster.startTimer(getServer().getScheduler());
 
         long duration = System.currentTimeMillis();
+
+        if (!setupEconomy()) {
+
+        }
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
             try{
@@ -104,6 +112,18 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new HoeHandler(this), this);
     }
 
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
     private void Config() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
@@ -130,6 +150,10 @@ public class LightningCore extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(prefix + "§aMade by §dJack");
         Bukkit.getConsoleSender().sendMessage(
                 prefix + "§6=== DISABLE §aCOMPLETE §6(Took §d" + (System.currentTimeMillis() - duration) + "ms§6) =");
+    }
+
+    public Economy getEconomy() {
+        return econ;
     }
 
 }

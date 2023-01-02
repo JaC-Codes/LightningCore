@@ -22,3 +22,5 @@ commands:
       - hh
   essence:
     description: Display balance
+  tokens:
+    description: Display balance

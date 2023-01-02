@@ -29,7 +29,7 @@ public class TokensBalanceCommand implements CommandExecutor {
         Player player = (Player) sender;
         if (args.length == 0) {
             int toks = tokens.getTokens(player);
-            player.sendMessage(CC.translate("&bEssence: &f" + String.valueOf(toks)));
+            player.sendMessage(CC.translate("&8Tokens: &6" + String.valueOf(toks)));
             return true;
         }
 

@@ -27,7 +27,7 @@ public class EssenceCommands extends SubCommand {
     public void perform(Player player, String[] args) {
         if (!(player.hasPermission("spartancore.admin"))) return;
 
-        if (args.length == 0) {
+        if (args.length == 1) {
             essence.usage(player);
         } else if (args[1].equalsIgnoreCase("set")) {
             if (args.length == 2) {

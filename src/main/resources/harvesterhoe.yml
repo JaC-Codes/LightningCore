@@ -1,3 +1,6 @@
+AutoSell:
+  Enabled: true
+  Cane-Sell-Amount: 50
 HarvesterHoe:
   item:
     name: "&8(&e!&8) &6&lHarvester Hoe &8(&e!&8)"
@@ -51,19 +54,27 @@ Usage:
   - ""
   - "&e/hh essence check <player> &7- &fCheck specified players essence balance"
   - ""
+  - "&e/hh tokens add <player> <amount> &7- &fAdd tokens to specified player's balance"
+  - ""
+  - "&e/hh tokens remove <player> <amount> &7- &fRemove tokens to specified player's balance"
+  - ""
+  - "&e/hh tokens set <player> <amount> &7- &fSet tokens players essence"
+  - ""
+  - "&e/hh tokens check <player> &7- &fCheck tokens players essence balance"
+  - ""
   - "&7---------------------------------------------------"
 Messages:
   Essence-Set: "&7You have set &6%player%'s &7essence balance to &6%amount%"
-  Essence-Add: "&7You have added &6%amount% &7essence to &6%players%'s &7essence balance"
+  Essence-Add: "&7You have added &6%amount% &7essence to &6%player%'s &7essence balance"
   Essence-Remove: "&7You have removed &6%amount% &7essence from &6%player%'s &7essence balance"
   Essence-Check: "&6%player% &7has an essence balance of &6%amount%"
   Essence-Received: "&7You have received &6%amount% &7essence"
   Tokens-Set: "&7You have set &6%player%'s &7token balance to &6%amount%"
-  Tokens-Add: "&7You have added &6%amount% &7tokens to &6%players%'s &7token balance"
+  Tokens-Add: "&7You have added &6%amount% &7tokens to &6%player%'s &7token balance"
   Tokens-Remove: "&7You have removed &6%amount% &7tokens from &6%player%'s &7token balance"
   Tokens-Check: "&6%player% &7has an token balance of &6%amount%"
-  Tokens-Received: "&7You have received &6%amount% &7essence"
+  Tokens-Received: "&7You have received &6%amount% &7tokens"
   #Next section if just 1 token or essence was added.
-  Token-Add: "&7You have added &6%amount% &7token to &6%players%'s &7token balance"
+  Token-Add: "&7You have added &6%amount% &7token to &6%player%'s &7token balance"
   Token-Remove: "&7You have removed &6%amount% &7token from &6%player%'s &7token balance"
   Token-Received: "&7You have received &6%amount% &7token"
