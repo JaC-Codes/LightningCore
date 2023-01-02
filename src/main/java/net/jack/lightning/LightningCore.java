@@ -37,7 +37,12 @@ public class LightningCore extends JavaPlugin {
     private final File crewUser = new File(getDataFolder(), "crewuser.yml");
     private final File stattrack = new File(getDataFolder(), "stattrack.yml");
     private final File harvesterHoe = new File(getDataFolder(), "harvesterhoe.yml");
+    private final File essence = new File(getDataFolder(), "essence.yml");
+    private final File tokens = new File(getDataFolder(), "tokens.yml");
 
+
+    private final FileConfiguration essenceConfiguration = YamlConfiguration.loadConfiguration(essence);
+    private final FileConfiguration tokensConfiguration = YamlConfiguration.loadConfiguration(tokens);
     private final FileConfiguration harvesterHoeConfiguration = YamlConfiguration.loadConfiguration(harvesterHoe);
     private final FileConfiguration statTrackConfiguration = YamlConfiguration.loadConfiguration(stattrack);
     private final FileConfiguration crewConfiguration = YamlConfiguration.loadConfiguration(crews);
@@ -104,6 +109,9 @@ public class LightningCore extends JavaPlugin {
         new Config(crewUser, crewUserConfiguration, "crewuser.yml", this);
         new Config(stattrack, statTrackConfiguration, "stattrack.yml", this);
         new Config(harvesterHoe, harvesterHoeConfiguration, "harvesterhoe.yml", this);
+        new Config(essence, essenceConfiguration, "essence.yml", this);
+        new Config(tokens, tokensConfiguration, "tokens.yml", this);
+
     }
 
 

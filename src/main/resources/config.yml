@@ -34,11 +34,11 @@ broadcasts-enabled: true
 broadcast-interval: 3600
 Broadcasts:
   0:
-    sound: BLOCK_NOTE_BLOCK_CHIME
+    sound: "BLOCK_NOTE_BLOCK_CHIME"
     messages:
       - '%prefix% &7Visit our website - play.test.rip'
   1:
-    sound: BLOCK_NOTE_BLOCK_HARP
+    sound: "BLOCK_NOTE_BLOCK_HARP"
     messages:
       - ' '
       - '%prefix% &6Visit our discord @ test.discordserver.rip'

@@ -1,16 +1,21 @@
 HarvesterHoe:
   item:
-    name: "&f* &6Harvester Hoe &f*"
+    name: "&8(&e!&8) &6&lHarvester Hoe &8(&e!&8)"
     lore:
       - ""
-      - "&f(Right click to open menu)"
+      - "&8(&e!&8) &f(Shift Right click to open menu)"
       - ""
       - "&7Upgrade your hoe with essence to unlock new"
       - "&7features for your hoe."
+      - ""
+      - "&f&lEnchants: "
+      - ""
+      - "&a&l%tokenfinder% %level%"
+      - "&b&l%essenceenhancer% %level%"
 HoeMenu:
   inventory:
     size: 27
-    title: "&eLightningCore"
+    title: "&e&lHarvesterHoes"
     items:
       0:
         item: "FIRE_CHARGE"
