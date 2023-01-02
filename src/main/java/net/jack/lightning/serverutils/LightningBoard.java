@@ -27,7 +27,7 @@ public class LightningBoard implements Listener {
 
         Objective obj = board.registerNewObjective("scoreboard", "lightning");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        obj.setDisplayName(CC.translate(this.core.getConfig().getString("Scoreboard.Title")));
+        obj.setDisplayName(CC.translate(this.core.getConfig().getString("Scoreboard.Title").replace("%prefix%", core.getPrefix())));
 
 
         Score space1 = obj.getScore(" ");

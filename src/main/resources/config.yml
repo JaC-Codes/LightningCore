@@ -1,5 +1,5 @@
 Scoreboard:
-  Title: "&c&lSpartan"
+  Title: "%prefix% &6&LightningCore"
 Messages:
   Points-Send: "&7You just set &e%player%'s points to &e%amount%&7."
   Points-Add: "&7You have added &e%amount% &7to  &e%player%'s &7balance."

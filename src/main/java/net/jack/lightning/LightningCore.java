@@ -10,6 +10,8 @@ import net.jack.lightning.crews.commands.Points;
 import net.jack.lightning.crews.listeners.CrewListeners;
 import net.jack.lightning.harvesterhoe.HoeHandler;
 import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
+import net.jack.lightning.harvesterhoe.essence.EssenceBalanceCommand;
+import net.jack.lightning.harvesterhoe.tokens.TokensBalanceCommand;
 import net.jack.lightning.serverutils.LightningBoard;
 import net.jack.lightning.stattrack.TopKills;
 import net.jack.lightning.stattrack.commands.Leaderboard;
@@ -90,6 +92,8 @@ public class LightningCore extends JavaPlugin {
         getCommand("killstop").setExecutor(new Leaderboard(this));
         getCommand("lc").setExecutor(new Reloader(this));
         getCommand("harvesterhoe").setExecutor(new CommandManager(this));
+        getCommand("essence").setExecutor(new EssenceBalanceCommand(this));
+        getCommand("tokens").setExecutor(new TokensBalanceCommand(this));
     }
 
     private void registerEvents() {

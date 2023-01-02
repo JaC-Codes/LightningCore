@@ -20,3 +20,5 @@ commands:
     description: Harvester Hoe
     aliases:
       - hh
+  essence:
+    description: Display balance

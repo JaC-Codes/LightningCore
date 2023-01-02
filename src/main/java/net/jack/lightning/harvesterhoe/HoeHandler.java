@@ -2,6 +2,7 @@ package net.jack.lightning.harvesterhoe;
 
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.crews.CrewUser;
+import net.jack.lightning.harvesterhoe.essence.Essence;
 import net.jack.lightning.harvesterhoe.menus.HoeMenu;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Location;
@@ -26,10 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class HoeHandler implements Listener {
 
@@ -43,6 +41,7 @@ public class HoeHandler implements Listener {
     private final HoeMenu hoeMenu;
     private final CrewUser crewUser;
     private final NamespacedKey key2;
+    private final Essence essence;
 
     public HoeHandler(LightningCore core) {
         this.core = core;
@@ -50,6 +49,7 @@ public class HoeHandler implements Listener {
         this.hoeMenu = new HoeMenu(core);
         this.crewUser = new CrewUser(core);
         this.key2 = new NamespacedKey(core, "confirm");
+        this.essence = new Essence(core);
     }
 
     public ItemStack harvesterHoe() {
@@ -134,6 +134,12 @@ public class HoeHandler implements Listener {
         if (!item.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING)) return;
         if (!broke.clone().subtract(0, 1, 0).getBlock().getType().equals(Material.SUGAR_CANE)) {
             event.setCancelled(true);
+        } else {
+            if (block.getType().equals(Material.SUGAR_CANE) && item.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                Random random = new Random();
+                int randomEssence = random.nextInt(25, 300);
+                essence.addEssence(player, randomEssence);
+            }
         }
     }
 
@@ -144,21 +150,21 @@ public class HoeHandler implements Listener {
         ItemStack item = event.getItemDrop().getItemStack();
         if (!item.hasItemMeta()) return;
         if (!item.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING)) return;
+        long confirmed = System.currentTimeMillis();
+        confirmationTime.put(player.getUniqueId(), confirmed);
+        Long confirmedWhen = confirmationTime.get(player.getUniqueId());
+        Long diff = System.currentTimeMillis() - confirmedWhen;
+        int seconds = (int) (diff / 1000);
         if (pdc.has(key2, PersistentDataType.STRING)) {
             pdc.remove(key2);
-        } else {
+            if (!confirmationTime.containsKey(player.getUniqueId())) return;
+            confirmationTime.remove(player.getUniqueId());
+        } else if (seconds == 10 || !pdc.has(key2, PersistentDataType.STRING)) {
             player.sendTitle(CC.translate("&a&lPress Q again to confirm"), CC.translate("&7Confirmation needed"));
             pdc.set(key2, PersistentDataType.STRING, "confirm");
             event.setCancelled(true);
-            long confirmed = System.currentTimeMillis();
-            confirmationTime.put(player.getUniqueId(), confirmed);
-            Long confirmedWhen = confirmationTime.get(player.getUniqueId());
-            Long diff = confirmed - confirmedWhen;
-            int seconds = (int) (diff / 1000);
-            if (seconds <= 10) {
-                pdc.remove(key2);
-            }
         }
+
     }
 
     @EventHandler

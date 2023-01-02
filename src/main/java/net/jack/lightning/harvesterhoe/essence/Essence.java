@@ -1,6 +1,7 @@
 package net.jack.lightning.harvesterhoe.essence;
 
 import net.jack.lightning.LightningCore;
+import net.jack.lightning.utilities.CC;
 import net.jack.lightning.utilities.Config;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -41,5 +42,11 @@ public class Essence {
         int essence = getEssence(player);
         this.core.getEssenceConfiguration().set("Player." + player.getUniqueId() + ".essence", (essence - amount));
         new Config(this.core.getEssence(), this.core.getEssenceConfiguration(), core);
+    }
+
+    public void usage(Player player) {
+        for (final String i : this.core.getHarvesterHoeConfiguration().getStringList("Usage")) {
+            player.sendMessage(CC.translate(i));
+        }
     }
 }

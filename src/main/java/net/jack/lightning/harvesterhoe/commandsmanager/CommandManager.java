@@ -1,7 +1,9 @@
 package net.jack.lightning.harvesterhoe.commandsmanager;
 
 import net.jack.lightning.LightningCore;
+import net.jack.lightning.harvesterhoe.commands.EssenceCommands;
 import net.jack.lightning.harvesterhoe.commands.GiveHarvesterHoe;
+import net.jack.lightning.harvesterhoe.commands.TokenCommands;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +20,8 @@ public class CommandManager implements CommandExecutor {
     public CommandManager(LightningCore core) {
         this.core = core;
         subCommands.add(new GiveHarvesterHoe(core));
+        subCommands.add(new EssenceCommands(core));
+        subCommands.add(new TokenCommands(core));
 
     }
 
