@@ -22,6 +22,7 @@ public class Reloader implements CommandExecutor {
             sender.sendMessage(CC.translate("&cUsage: &e/lc reload"));
         }
         if (args.length == 1) {
+            core.reloadHarvesterHoe();
             core.reloadConfig();
             sender.sendMessage(CC.translate(core.getPrefix() + " &eConfiguration reloaded."));
         }

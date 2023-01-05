@@ -3,7 +3,7 @@ package net.jack.lightning.harvesterhoe;
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.crews.CrewUser;
 import net.jack.lightning.harvesterhoe.essence.Essence;
-import net.jack.lightning.harvesterhoe.menus.HoeMenu;
+import net.jack.lightning.harvesterhoe.menus.MainMenu;
 import net.jack.lightning.harvesterhoe.tokens.Tokens;
 import net.jack.lightning.utilities.CC;
 import net.milkbowl.vault.economy.Economy;
@@ -19,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -30,7 +29,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.*;
 
@@ -43,20 +41,24 @@ public class HoeHandler implements Listener {
 
     private final LightningCore core;
     private final NamespacedKey key;
-    private final HoeMenu hoeMenu;
+    private final MainMenu mainMenu;
     private final CrewUser crewUser;
     private final NamespacedKey key2;
+    private final NamespacedKey key3;
     private final Essence essence;
     private final Tokens tokens;
+
+    private boolean autoSell = false;
 
     public HoeHandler(LightningCore core) {
         this.core = core;
         this.key = new NamespacedKey(core, "hoe");
-        this.hoeMenu = new HoeMenu(core);
+        this.mainMenu = new MainMenu(core);
         this.crewUser = new CrewUser(core);
         this.key2 = new NamespacedKey(core, "confirm");
         this.essence = new Essence(core);
         this.tokens = new Tokens(core);
+        this.key3 = new NamespacedKey(core, "asenabled");
     }
 
     public ItemStack harvesterHoe() {
@@ -96,17 +98,9 @@ public class HoeHandler implements Listener {
         if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
             if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
                 player.sendMessage(CC.translate("&eOpening HarvesterHoe menu..."));
-                hoeMenu.openHoeMenu(player);
+                mainMenu.openMainMenu(player);
             }
 
-        }
-    }
-
-    @EventHandler
-    public void inventoryInteract(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTitle().equals(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.title")))) {
-            event.setCancelled(true);
         }
     }
 
@@ -152,22 +146,25 @@ public class HoeHandler implements Listener {
 
                 int findAutoSell = this.core.getHarvesterHoeConfiguration().getInt("AutoSell.Cane-Sell-Amount");
                 Economy eco = this.core.getEconomy();
+                PersistentDataContainer pdc = player.getPersistentDataContainer();
+                final int[] scAmount = {0};
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < player.getInventory().getSize(); i++) {
-                            ItemStack item = player.getInventory().getItem(i);
-                            if (item == null) return;
-                            if (item.getType() == Material.SUGAR_CANE) {
-                                int scAmount = 0;
-                                scAmount = item.getAmount();
-                                item.setAmount(scAmount);
-                                player.getInventory().remove(item);
-                                int finalValue = scAmount * findAutoSell;
-                                EconomyResponse response = eco.depositPlayer(player, finalValue);
-                                player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount + " sugarcane for $" + finalValue));
-                            }
+                        if (pdc.has(key3, PersistentDataType.STRING)) {
+                            for (int i = 0; i < player.getInventory().getSize(); i++) {
+                                ItemStack item = player.getInventory().getItem(i);
+                                if (item == null) return;
+                                if (item.getType() == Material.SUGAR_CANE) {
+                                    scAmount[0] = item.getAmount();
+                                    item.setAmount(scAmount[0]);
+                                    player.getInventory().remove(item);
+                                    int finalValue = scAmount[0] * findAutoSell;
+                                    EconomyResponse response = eco.depositPlayer(player, finalValue);
+                                    player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount[0] + " sugarcane for $" + finalValue));
+                                }
 
+                            }
                         }
                     }
                 }.runTaskTimer(core, 600, 600);

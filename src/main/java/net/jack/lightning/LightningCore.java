@@ -1,6 +1,7 @@
 package net.jack.lightning;
 
 
+import com.google.common.base.Charsets;
 import lombok.Getter;
 import net.jack.lightning.autobroadcaster.Broadcaster;
 import net.jack.lightning.autobroadcaster.Reloader;
@@ -11,6 +12,7 @@ import net.jack.lightning.crews.listeners.CrewListeners;
 import net.jack.lightning.harvesterhoe.HoeHandler;
 import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
 import net.jack.lightning.harvesterhoe.essence.EssenceBalanceCommand;
+import net.jack.lightning.harvesterhoe.menus.MenuHandler;
 import net.jack.lightning.harvesterhoe.tokens.TokensBalanceCommand;
 import net.jack.lightning.serverutils.LightningBoard;
 import net.jack.lightning.stattrack.TopKills;
@@ -27,6 +29,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 @Getter
 public class LightningCore extends JavaPlugin {
@@ -110,6 +114,7 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new CrewListeners(this), this);
         manager.registerEvents(new Events(this), this);
         manager.registerEvents(new HoeHandler(this), this);
+        manager.registerEvents(new MenuHandler(this), this);
     }
 
     private boolean setupEconomy() {
@@ -154,6 +159,17 @@ public class LightningCore extends JavaPlugin {
 
     public Economy getEconomy() {
         return econ;
+    }
+
+    public void reloadHarvesterHoe() {
+       YamlConfiguration harvester = YamlConfiguration.loadConfiguration(harvesterHoe);
+
+        final InputStream defConfigStream = getResource("harvesterhoe.yml");
+        if (defConfigStream == null) {
+            return;
+        }
+
+        harvester.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
     }
 
 }

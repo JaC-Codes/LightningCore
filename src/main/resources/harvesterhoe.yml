@@ -4,6 +4,7 @@ AutoSell:
 HarvesterHoe:
   item:
     name: "&8(&e!&8) &6&lHarvester Hoe &8(&e!&8)"
+    auto-sell-name: "&8(&e!&8) &6&lHarvester Hoe &8(&e!&8)  &8&l** &a&lAUTO SELL MODE &8&l**"
     lore:
       - ""
       - "&8(&e!&8) &f(Shift Right click to open menu)"
@@ -15,10 +16,18 @@ HarvesterHoe:
       - ""
       - "&a&l%tokenfinder% %level%"
       - "&b&l%essenceenhancer% %level%"
-HoeMenu:
+MainMenu:
   inventory:
     size: 27
     title: "&e&lHarvesterHoes"
+    hoe-name: "&8(&e!&8) &6&lHarvester Hoe &8(&e!&8)"
+    hoe-lore:
+      - ""
+      - "&7Right click to open the Hoe Menu"
+      - ""
+      - "&&fEarn essence and tokens to unlock"
+      - "&fenchants to boost your hoe experience"
+    hoe-slot: 13
     items:
       0:
         item: "FIRE_CHARGE"
@@ -28,19 +37,32 @@ HoeMenu:
           - "&fToken Balance: &7%tokens%"
         slot: 11
       1:
-        item: "DIAMOND_HOE"
-        name: "&f&l** &6&lHarvester Hoe &f&l**"
-        lore:
-          - ""
-          - "&fClick to open the hoe menu"
-        slot: 13
-      2:
         item: "CLAY_BALL"
         name: "&b&lEssence"
         lore:
           - ""
           - "&fEssence Balance: &7%essence%"
         slot: 15
+HoeMenu:
+  inventory:
+    auto-sell:
+      disabled-item: "RED_STAINED_GLASS_PANE"
+      enabled-item: "GREEN_STAINED_GLASS_PANE"
+      name: "&a&lAUTO SELL"
+      lore:
+        - ""
+        - "&cTest"
+      slot: 5
+    size: 27
+    title: "&e&lHarvesterHoes"
+    items:
+      0:
+        item: "STONE"
+        name: "&a&lAUTO SELL"
+        lore:
+          - ""
+          - "&fAUTO SELL"
+        slot: 11
 Usage:
   - "&7---------------------------------------------------"
   - ""
