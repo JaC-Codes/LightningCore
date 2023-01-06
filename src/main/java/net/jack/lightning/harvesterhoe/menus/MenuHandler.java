@@ -73,9 +73,11 @@ public class MenuHandler implements Listener {
                     player.getPersistentDataContainer().has(asenabled, PersistentDataType.STRING)) {
                 hoeMeta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration()
                         .getString("HarvesterHoe.item.auto-sell-name")));
+                item.setItemMeta(hoeMeta);
             } else if (hoeMeta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
                 hoeMeta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration()
                         .getString("HarvesterHoe.item.name")));
+                item.setItemMeta(hoeMeta);
             }
         }
     }
