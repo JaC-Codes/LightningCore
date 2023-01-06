@@ -167,7 +167,7 @@ public class HoeHandler implements Listener {
                             }
                         }
                     }
-                }.runTaskTimer(core, 600, 600);
+                }.runTaskTimer(core, 400, 400);
 
             }
         }

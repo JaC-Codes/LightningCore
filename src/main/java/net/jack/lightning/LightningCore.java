@@ -11,6 +11,7 @@ import net.jack.lightning.crews.commands.Points;
 import net.jack.lightning.crews.listeners.CrewListeners;
 import net.jack.lightning.harvesterhoe.HoeHandler;
 import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
+import net.jack.lightning.harvesterhoe.customenchants.EssenceEnhancer;
 import net.jack.lightning.harvesterhoe.essence.EssenceBalanceCommand;
 import net.jack.lightning.harvesterhoe.menus.MenuHandler;
 import net.jack.lightning.harvesterhoe.tokens.TokensBalanceCommand;
@@ -24,6 +25,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 
 @Getter
 public class LightningCore extends JavaPlugin {
@@ -40,6 +43,7 @@ public class LightningCore extends JavaPlugin {
 
     private LightningCore instance;
     private Broadcaster broadcaster;
+    private EssenceEnhancer essenceEnhancer;
     private Economy econ = null;
 
     private final File crews = new File(getDataFolder(), "crews.yml");
@@ -65,8 +69,10 @@ public class LightningCore extends JavaPlugin {
         this.Config();
         this.topKills = new TopKills(this);
         this.broadcaster = new Broadcaster(this);
+        this.essenceEnhancer = new EssenceEnhancer(this);
         topKills.killTopUpdater();
         broadcaster.startTimer(getServer().getScheduler());
+        registerEnchants(essenceEnhancer);
 
         long duration = System.currentTimeMillis();
 
@@ -95,6 +101,18 @@ public class LightningCore extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(
                 prefix + "§6=== ENABLE §aCOMPLETE §6(Took §d" + (System.currentTimeMillis() - duration) + "ms§6) ===");
 
+    }
+
+    private void registerEnchants(Enchantment enchantment) {
+        try {
+            Field field = Enchantment.class.getDeclaredField("acceptingNew");
+            field.setAccessible(true);
+            field.set(null, true);
+            Enchantment.registerEnchantment(essenceEnhancer);
+        }  catch (NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("Enchantments failed");
+            throw new RuntimeException(e);
+        }
     }
 
     private void registerCommands() {
