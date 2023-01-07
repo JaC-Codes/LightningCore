@@ -151,26 +151,25 @@ public class HoeHandler implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (pdc.has(key3, PersistentDataType.STRING)) {
-                            for (int i = 0; i < player.getInventory().getSize(); i++) {
-                                ItemStack item = player.getInventory().getItem(i);
-                                if (item == null) return;
-                                if (item.getType() == Material.SUGAR_CANE) {
-                                    scAmount[0] = item.getAmount();
-                                    item.setAmount(scAmount[0]);
-                                    player.getInventory().remove(item);
-                                    int finalValue = scAmount[0] * findAutoSell;
-                                    EconomyResponse response = eco.depositPlayer(player, finalValue);
-                                    player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount[0] + " sugarcane for $" + finalValue));
-                                }
-
-                            }
+                        if (!pdc.has(key3, PersistentDataType.STRING)) return;
+                        for (int i = 0; i < player.getInventory().getSize(); i++) {
+                            ItemStack item = player.getInventory().getItem(i);
+                            if (item == null) return;
+                            if (!(item.getType() == Material.SUGAR_CANE)) return;
+                            scAmount[0] = item.getAmount();
+                            item.setAmount(scAmount[0]);
+                            player.getInventory().remove(item);
+                            int finalValue = scAmount[0] * findAutoSell;
+                            EconomyResponse response = eco.depositPlayer(player, finalValue);
+                            player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount[0] + " sugarcane for $" + finalValue));
                         }
+
                     }
                 }.runTaskTimer(core, 400, 400);
 
             }
         }
+
     }
 
     @EventHandler

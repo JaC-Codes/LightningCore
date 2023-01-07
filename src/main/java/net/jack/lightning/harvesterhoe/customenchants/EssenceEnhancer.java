@@ -12,6 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 public class EssenceEnhancer extends Enchantment {
 
     private final LightningCore core;
@@ -24,11 +26,14 @@ public class EssenceEnhancer extends Enchantment {
     }
 
 
-    private void essenceEnchance(Player player) {
+    private void essenceEnhance(Player player) {
+        Random random = new Random();
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!item.getType().equals(Material.DIAMOND_HOE)) return;
         ItemMeta meta = item.getItemMeta();
         if (!meta.getPersistentDataContainer().has(hoe, PersistentDataType.STRING)) return;
+        if (!meta.hasEnchant(this)); return;
+
     }
 
     @NotNull
