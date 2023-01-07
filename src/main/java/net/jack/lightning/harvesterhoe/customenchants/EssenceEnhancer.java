@@ -2,6 +2,7 @@ package net.jack.lightning.harvesterhoe.customenchants;
 
 
 import net.jack.lightning.LightningCore;
+import net.jack.lightning.utilities.CC;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -34,6 +35,10 @@ public class EssenceEnhancer extends Enchantment {
         if (!meta.getPersistentDataContainer().has(hoe, PersistentDataType.STRING)) return;
         if (!meta.hasEnchant(this)); return;
 
+    }
+
+    public String getEssenceDN() {
+        return CC.translate("&b&lEssence Enhancer");
     }
 
     @NotNull
