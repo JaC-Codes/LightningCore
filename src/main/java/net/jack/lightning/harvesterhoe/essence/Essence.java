@@ -3,15 +3,11 @@ package net.jack.lightning.harvesterhoe.essence;
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.utilities.CC;
 import net.jack.lightning.utilities.Config;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.UUID;
 
 public class Essence {
 
-   // private HashMap<UUID, Integer> essenceAmount = new HashMap<>();
 
     private final LightningCore core;
 

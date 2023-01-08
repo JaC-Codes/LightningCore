@@ -2,6 +2,8 @@ package net.jack.lightning.harvesterhoe;
 
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.crews.CrewUser;
+import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
+import net.jack.lightning.harvesterhoe.customenchants.EnumEnchants;
 import net.jack.lightning.harvesterhoe.essence.Essence;
 import net.jack.lightning.harvesterhoe.menus.MainMenu;
 import net.jack.lightning.harvesterhoe.tokens.Tokens;
@@ -31,6 +33,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class HoeHandler implements Listener {
 
@@ -47,6 +50,7 @@ public class HoeHandler implements Listener {
     private final NamespacedKey key3;
     private final Essence essence;
     private final Tokens tokens;
+    private final EnchantProfile enchantProfile;
 
     private boolean autoSell = false;
 
@@ -59,15 +63,19 @@ public class HoeHandler implements Listener {
         this.essence = new Essence(core);
         this.tokens = new Tokens(core);
         this.key3 = new NamespacedKey(core, "asenabled");
+        this.enchantProfile = new EnchantProfile(core);
     }
 
-    public ItemStack harvesterHoe() {
+    public ItemStack harvesterHoe(Player player) {
         ItemStack item = new ItemStack(Material.DIAMOND_HOE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HarvesterHoe.item.name")));
         List<String> lore = new ArrayList<>();
         for (String l : this.core.getHarvesterHoeConfiguration().getStringList("HarvesterHoe.item.lore")) {
-            lore.add(CC.translate(l));
+            lore.add(CC.translate(l).replace("%tokengrabber%", EnumEnchants.TOKEN_GRABBER.getDisplayName())
+                    .replace("%tokenlevel%", String.valueOf(enchantProfile.getTokenGrabberLevel(player)))
+                    .replace("%essenceenhancer%", EnumEnchants.ESSENCE_ENHANCER.getDisplayName())
+                    .replace("%essencelevel%", String.valueOf(enchantProfile.getEssenceEnhanceLevel(player))));
         }
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -81,7 +89,7 @@ public class HoeHandler implements Listener {
 
     public void giveHoe(Player player, int amount) {
 
-        ItemStack item = harvesterHoe();
+        ItemStack item = harvesterHoe(player);
         item.setAmount(amount);
         player.getInventory().addItem(item);
     }
@@ -127,6 +135,8 @@ public class HoeHandler implements Listener {
     @EventHandler
     public void onCaneBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
+        int essenceEnhanceLevel = enchantProfile.getEssenceEnhanceLevel(player);
+        int tokenGrabberLevel = enchantProfile.getTokenGrabberLevel(player);
         Block block = event.getBlock();
         Material material = event.getBlock().getType();
         if (!block.getType().equals(Material.SUGAR_CANE)) return;
@@ -139,9 +149,11 @@ public class HoeHandler implements Listener {
         } else {
             if (block.getType().equals(Material.SUGAR_CANE) && item.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
                 Random random = new Random();
-                int randomEssence = random.nextInt(25, 300);
+                int bound = ThreadLocalRandom.current().nextInt(essenceEnhanceLevel);
+                int randomEssence = random.nextInt(25, bound + 100);
                 essence.addEssence(player, randomEssence);
-                int randomTokens = random.nextInt(1, 6);
+                int bound2 = ThreadLocalRandom.current().nextInt(tokenGrabberLevel);
+                int randomTokens = random.nextInt(1, bound2 + 10);
                 tokens.addTokens(player, randomTokens);
 
                 int findAutoSell = this.core.getHarvesterHoeConfiguration().getInt("AutoSell.Cane-Sell-Amount");
@@ -155,15 +167,15 @@ public class HoeHandler implements Listener {
                         for (int i = 0; i < player.getInventory().getSize(); i++) {
                             ItemStack item = player.getInventory().getItem(i);
                             if (item == null) return;
-                            if (!(item.getType() == Material.SUGAR_CANE)) return;
-                            scAmount[0] = item.getAmount();
-                            item.setAmount(scAmount[0]);
-                            player.getInventory().remove(item);
-                            int finalValue = scAmount[0] * findAutoSell;
-                            EconomyResponse response = eco.depositPlayer(player, finalValue);
-                            player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount[0] + " sugarcane for $" + finalValue));
+                            if (item.getType() == Material.SUGAR_CANE) {
+                                scAmount[0] = item.getAmount();
+                                item.setAmount(scAmount[0]);
+                                player.getInventory().remove(item);
+                                int finalValue = scAmount[0] * findAutoSell;
+                                EconomyResponse response = eco.depositPlayer(player, finalValue);
+                                player.sendMessage(CC.translate("&8&l** &a&lAUTO SELL &8&l** &fYou have sold " + scAmount[0] + " sugarcane for $" + finalValue));
+                            }
                         }
-
                     }
                 }.runTaskTimer(core, 400, 400);
 

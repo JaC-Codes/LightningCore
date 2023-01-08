@@ -39,7 +39,7 @@ public class Tokens {
 
     public void removeTokens(Player player, int amount) {
         int tokens = getTokens(player);
-        this.core.getTokensConfiguration().set("Player." + player.getUniqueId() + ".essence", (tokens - amount));
+        this.core.getTokensConfiguration().set("Player." + player.getUniqueId() + ".tokens", (tokens - amount));
         new Config(this.core.getTokens(), this.core.getTokensConfiguration(), core);
     }
 

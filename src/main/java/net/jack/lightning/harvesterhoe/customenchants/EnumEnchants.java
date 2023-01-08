@@ -2,17 +2,16 @@ package net.jack.lightning.harvesterhoe.customenchants;
 
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public enum EnumEnchants {
 
-    ESSENCE_ENHANCER("Essence Enhancer", 1, 500, List.of(Material.DIAMOND_HOE), List.of(CC.translate("&fIncrease essence finding"))),
-    TOKEN_GRABBER("Token Grabber", 1, 250, List.of(Material.DIAMOND_HOE), List.of(CC.translate("&fIncrease token finding")));
+    ESSENCE_ENHANCER(CC.translate("&b&lEssence Enhancer"), 1, 500, List.of(Material.DIAMOND_HOE), List.of(CC.translate(" "),
+            CC.translate("&fIncrease essence finding"))),
+    TOKEN_GRABBER(CC.translate("&a&lToken Grabber"), 1, 250, List.of(Material.DIAMOND_HOE), List.of(CC.translate(" "),
+            CC.translate("&fIncrease Token finding")));
 
 
     private final String key;

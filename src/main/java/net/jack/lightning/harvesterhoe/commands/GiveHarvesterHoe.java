@@ -2,7 +2,6 @@ package net.jack.lightning.harvesterhoe.commands;
 
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.harvesterhoe.HoeHandler;
-import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
 import net.jack.lightning.harvesterhoe.commandsmanager.SubCommand;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Bukkit;

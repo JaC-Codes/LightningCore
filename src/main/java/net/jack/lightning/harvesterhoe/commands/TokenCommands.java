@@ -48,7 +48,7 @@ public class TokenCommands extends SubCommand {
                         player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Token-Set").replace("%player%", target.getName())
                                 .replace("%amount%", String.valueOf(amount))));
                     } else {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Token-Set")
+                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Tokens-Set")
                                 .replace("%player%", target.getName())
                                 .replace("%amount%", String.valueOf(amount))));
                     }

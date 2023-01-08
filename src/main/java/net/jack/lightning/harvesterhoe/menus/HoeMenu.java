@@ -1,6 +1,9 @@
 package net.jack.lightning.harvesterhoe.menus;
 
 import net.jack.lightning.LightningCore;
+import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
+import net.jack.lightning.harvesterhoe.customenchants.EnumEnchants;
+import net.jack.lightning.harvesterhoe.menus.menuhandlers.HoeMenuHandler;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,59 +22,32 @@ import java.util.List;
 public class HoeMenu {
 
     private final LightningCore core;
+    private final EnchantProfile enchantProfile;
     private Inventory hoeMenu;
-    private final NamespacedKey autoSellKey;
-    private final NamespacedKey asenabled;
+    private final HoeMenuHandler hoeMenuHandler;
 
 
     public HoeMenu(LightningCore core) {
         this.core = core;
+        this.enchantProfile = new EnchantProfile(core);
+        this.hoeMenuHandler = new HoeMenuHandler(core);
+
         hoeMenu = Bukkit.createInventory(null, this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.size"),
                 CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.title")));
 
-        ItemStack glasspane = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, (short) 0);
-        int slot;
-        while ((slot = hoeMenu.firstEmpty()) != -1) hoeMenu.setItem(slot, glasspane);
-        this.autoSellKey = new NamespacedKey(core, "autosell");
-        this.asenabled = new NamespacedKey(core, "asenabled");
     }
 
     public void openHoeMenu(Player player) {
 
-        hoeMenu.setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.auto-sell.slot"), autoSell(player));
+        hoeMenu.setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.auto-sell.slot"),
+                hoeMenuHandler.autoSell(player));
+        hoeMenu.setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.essence-enhancer.slot"),
+                hoeMenuHandler.essenceEnhancer(player));
+        hoeMenu.setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.token-grabber.slot"),
+                hoeMenuHandler.tokenGrabber(player));
+
 
         player.openInventory(hoeMenu);
-    }
-
-    public ItemStack autoSell(Player player) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        if (pdc.has(asenabled, PersistentDataType.STRING)) {
-            ItemStack enabledItem = new ItemStack(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.auto-sell.enabled-item")));
-            ItemMeta enabledMeta = enabledItem.getItemMeta();
-            enabledMeta.getPersistentDataContainer().set(autoSellKey, PersistentDataType.STRING, "autosell");
-            enabledMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            enabledMeta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.auto-sell.name")));
-            List<String> lore = new ArrayList<>();
-            for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("MainMenu.inventory.auto-sell.lore")) {
-                lore.add(CC.translate(l));
-            }
-            enabledMeta.setLore(lore);
-            enabledItem.setItemMeta(enabledMeta);
-            return enabledItem;
-        } else {
-            ItemStack item = new ItemStack(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.auto-sell.disabled-item")));
-            ItemMeta meta = item.getItemMeta();
-            meta.getPersistentDataContainer().set(autoSellKey, PersistentDataType.STRING, "autosell");
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            meta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.auto-sell.name")));
-            List<String> lore = new ArrayList<>();
-            for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("MainMenu.inventory.auto-sell.lore")) {
-                lore.add(CC.translate(l));
-            }
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-            return item;
-        }
     }
 
     public void updateHoeMenu(Player player) {

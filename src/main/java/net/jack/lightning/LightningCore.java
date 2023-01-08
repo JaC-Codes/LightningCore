@@ -11,10 +11,12 @@ import net.jack.lightning.crews.commands.Points;
 import net.jack.lightning.crews.listeners.CrewListeners;
 import net.jack.lightning.harvesterhoe.HoeHandler;
 import net.jack.lightning.harvesterhoe.commandsmanager.CommandManager;
-import net.jack.lightning.harvesterhoe.customenchants.EssenceEnhancer;
+import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
 import net.jack.lightning.harvesterhoe.essence.EssenceBalanceCommand;
-import net.jack.lightning.harvesterhoe.menus.MenuHandler;
+import net.jack.lightning.harvesterhoe.menus.MenuEvents;
 import net.jack.lightning.harvesterhoe.tokens.TokensBalanceCommand;
+import net.jack.lightning.harvesterhoe.upgradinghandlers.EssenceUpgrading;
+import net.jack.lightning.harvesterhoe.upgradinghandlers.TokenUpgrading;
 import net.jack.lightning.serverutils.LightningBoard;
 import net.jack.lightning.stattrack.TopKills;
 import net.jack.lightning.stattrack.commands.Leaderboard;
@@ -25,7 +27,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,7 +34,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 
 @Getter
 public class LightningCore extends JavaPlugin {
@@ -43,7 +43,6 @@ public class LightningCore extends JavaPlugin {
 
     private LightningCore instance;
     private Broadcaster broadcaster;
-    private EssenceEnhancer essenceEnhancer;
     private Economy econ = null;
 
     private final File crews = new File(getDataFolder(), "crews.yml");
@@ -53,8 +52,10 @@ public class LightningCore extends JavaPlugin {
     private final File harvesterHoe = new File(getDataFolder(), "harvesterhoe.yml");
     private final File essence = new File(getDataFolder(), "essence.yml");
     private final File tokens = new File(getDataFolder(), "tokens.yml");
+    private final File enchants = new File(getDataFolder(), "enchantdata.yml");
 
 
+    private final FileConfiguration enchantConfiguration = YamlConfiguration.loadConfiguration(enchants);
     private final FileConfiguration essenceConfiguration = YamlConfiguration.loadConfiguration(essence);
     private final FileConfiguration tokensConfiguration = YamlConfiguration.loadConfiguration(tokens);
     private final FileConfiguration harvesterHoeConfiguration = YamlConfiguration.loadConfiguration(harvesterHoe);
@@ -69,10 +70,8 @@ public class LightningCore extends JavaPlugin {
         this.Config();
         this.topKills = new TopKills(this);
         this.broadcaster = new Broadcaster(this);
-        this.essenceEnhancer = new EssenceEnhancer(this);
         topKills.killTopUpdater();
         broadcaster.startTimer(getServer().getScheduler());
-        registerEnchants(essenceEnhancer);
 
         long duration = System.currentTimeMillis();
 
@@ -103,17 +102,6 @@ public class LightningCore extends JavaPlugin {
 
     }
 
-    private void registerEnchants(Enchantment enchantment) {
-        try {
-            Field field = Enchantment.class.getDeclaredField("acceptingNew");
-            field.setAccessible(true);
-            field.set(null, true);
-            Enchantment.registerEnchantment(essenceEnhancer);
-        }  catch (NoSuchFieldException | IllegalAccessException e) {
-            System.out.println("Enchantments failed");
-            throw new RuntimeException(e);
-        }
-    }
 
     private void registerCommands() {
         getCommand("crew").setExecutor(new CrewCommandManager(this));
@@ -132,7 +120,10 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new CrewListeners(this), this);
         manager.registerEvents(new Events(this), this);
         manager.registerEvents(new HoeHandler(this), this);
-        manager.registerEvents(new MenuHandler(this), this);
+        manager.registerEvents(new MenuEvents(this), this);
+        manager.registerEvents(new EnchantProfile(this), this);
+        manager.registerEvents(new EssenceUpgrading(this), this);
+        manager.registerEvents(new TokenUpgrading(this), this);
     }
 
     private boolean setupEconomy() {
@@ -158,6 +149,7 @@ public class LightningCore extends JavaPlugin {
         new Config(harvesterHoe, harvesterHoeConfiguration, "harvesterhoe.yml", this);
         new Config(essence, essenceConfiguration, "essence.yml", this);
         new Config(tokens, tokensConfiguration, "tokens.yml", this);
+        new Config(enchants, enchantConfiguration, "enchantdata.yml", this);
 
     }
 
