@@ -11,7 +11,9 @@ public enum EnumEnchants {
     ESSENCE_ENHANCER(CC.translate("&b&lEssence Enhancer"), 1, 500, List.of(Material.DIAMOND_HOE), List.of(CC.translate(" "),
             CC.translate("&fIncrease essence finding"))),
     TOKEN_GRABBER(CC.translate("&a&lToken Grabber"), 1, 250, List.of(Material.DIAMOND_HOE), List.of(CC.translate(" "),
-            CC.translate("&fIncrease Token finding")));
+            CC.translate("&fIncrease Token finding"))),
+    XP_GAINER(CC.translate("&e&lXP Gainer"), 1, 50, List.of(Material.DIAMOND_HOE), List.of(CC.translate(" "),
+            CC.translate("&fXP Multiplier")));
 
 
     private final String key;

@@ -25,6 +25,7 @@ public class HoeMenuHandler {
     private final NamespacedKey asenabled;
     private final NamespacedKey essUpgrade;
     private final NamespacedKey tokenGrab;
+    private final NamespacedKey xpgainer;
 
 
     public HoeMenuHandler(LightningCore core) {
@@ -35,6 +36,7 @@ public class HoeMenuHandler {
         this.asenabled = new NamespacedKey(core, "asenabled");
         this.essUpgrade = new NamespacedKey(core, "essupgrade");
         this.tokenGrab = new NamespacedKey(core, "tokengrab");
+        this.xpgainer = new NamespacedKey(core, "xpgainer");
     }
 
     public ItemStack autoSell(Player player) {
@@ -96,6 +98,23 @@ public class HoeMenuHandler {
         for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("HoeMenu.inventory.token-grabber.lore")) {
             lore.add(CC.translate(l)
                     .replace("%tokenlevel%", String.valueOf(enchantProfile.getTokenGrabberLevel(player))));
+        }
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public ItemStack xpGainer(Player player) {
+        ItemStack item = new ItemStack(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.xp-gainer.item")));
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(tokenGrab, PersistentDataType.STRING, "xpgainer");
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.xp-gainer.name"))
+                .replace("%xpgainer%", EnumEnchants.XP_GAINER.getDisplayName()));
+        List<String> lore = new ArrayList<>();
+        for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("HoeMenu.inventory.xp-gainer.lore")) {
+            lore.add(CC.translate(l)
+                    .replace("%xpgainlevel%", String.valueOf(enchantProfile.getXpGainerLevel(player))));
         }
         meta.setLore(lore);
         item.setItemMeta(meta);

@@ -22,6 +22,7 @@ public class EnchantProfile implements Listener {
     public void createPlayer(Player player) {
         this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + ".EssenceEnhanceLevel", 1);
         this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + ".TokenGrabberLevel", 1);
+        this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + ".XpGainerLevel", 1);
         new Config(this.core.getEnchants(), this.core.getEnchantConfiguration(), core);
     }
 
@@ -64,6 +65,27 @@ public class EnchantProfile implements Listener {
     public void removeTokenGrabberLevel(Player player, int amount) {
         int TokenGrabberLevel = getTokenGrabberLevel(player);
         this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + "TokenGrabberLevel", (TokenGrabberLevel - amount));
+        new Config(this.core.getEnchants(), this.core.getEnchantConfiguration(), core);
+    }
+
+    public int getXpGainerLevel(Player player) {
+        return this.core.getEnchantConfiguration().getInt("Player." + player.getUniqueId() + ".XpGainerLevel");
+    }
+
+    public void setXpGainerLevel(Player player, int amount) {
+        this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + ".XpGainerLevel", amount);
+        new Config(this.core.getEnchants(), this.core.getEnchantConfiguration(), core);
+    }
+
+    public void addXpGainerLevel(Player player, int amount) {
+        int XpGainerLevel = getXpGainerLevel(player);
+        this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + ".XpGainerLevel", (XpGainerLevel + amount));
+        new Config(this.core.getEnchants(), this.core.getEnchantConfiguration(), core);
+    }
+
+    public void removeXpGainerLevel(Player player, int amount) {
+        int XpGainerLevel = getXpGainerLevel(player);
+        this.core.getEnchantConfiguration().set("Player." + player.getUniqueId() + "XpGainerLevel", (XpGainerLevel - amount));
         new Config(this.core.getEnchants(), this.core.getEnchantConfiguration(), core);
     }
 

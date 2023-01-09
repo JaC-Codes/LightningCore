@@ -62,20 +62,20 @@ public class MenuEvents implements Listener {
             }
         }
 
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        if (event.getView().getTitle().equalsIgnoreCase(CC.translate(this.core.getConfig()
-                .getString("HoeMenu.inventory.title")))) {
-            new BukkitRunnable() {
+ //   @EventHandler
+ //   public void onInventoryClose(InventoryCloseEvent event) {
+   //     Player player = (Player) event.getPlayer();
+   //    if (event.getView().getTitle().equalsIgnoreCase(CC.translate(this.core.getHarvesterHoeConfiguration()
+     //           .getString("HoeMenu.inventory.title")))) {
+      //      new BukkitRunnable() {
 
-                @Override
-                public void run() {
-                    mainMenu.openMainMenu(player);
-                }
-            }.runTaskLater((Plugin) this, 5L);
-        }
-    }
+        //        @Override
+          //      public void run() {
+         //           mainMenu.openMainMenu(player);
+         //       }
+        //    }.runTaskLater(core, 5L);
+      //  }
+   // }
 
     public void loopInventory(Player player) {
         for (int i = 0; i < player.getInventory().getSize(); i++) {

@@ -17,6 +17,7 @@ import net.jack.lightning.harvesterhoe.menus.MenuEvents;
 import net.jack.lightning.harvesterhoe.tokens.TokensBalanceCommand;
 import net.jack.lightning.harvesterhoe.upgradinghandlers.EssenceUpgrading;
 import net.jack.lightning.harvesterhoe.upgradinghandlers.TokenUpgrading;
+import net.jack.lightning.harvesterhoe.upgradinghandlers.XpGainerUpgrading;
 import net.jack.lightning.serverutils.LightningBoard;
 import net.jack.lightning.stattrack.TopKills;
 import net.jack.lightning.stattrack.commands.Leaderboard;
@@ -124,6 +125,7 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new EnchantProfile(this), this);
         manager.registerEvents(new EssenceUpgrading(this), this);
         manager.registerEvents(new TokenUpgrading(this), this);
+        manager.registerEvents(new XpGainerUpgrading(this), this);
     }
 
     private boolean setupEconomy() {

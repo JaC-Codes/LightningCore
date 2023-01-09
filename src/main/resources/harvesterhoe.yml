@@ -73,6 +73,13 @@ HoeMenu:
         - ""
         - "&fCurrent Level: &e%tokenlevel%"
       slot: 2
+    xp-gainer:
+      item: "EXPERIENCE_BOTTLE"
+      name: "&a&l%xpgainer%"
+      lore:
+        - ""
+        - "&fCurrent Level: &e%xpgainlevel%"
+      slot: 3
 Usage:
   - "&7---------------------------------------------------"
   - ""

@@ -45,6 +45,7 @@ public class HoeMenu {
                 hoeMenuHandler.essenceEnhancer(player));
         hoeMenu.setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.token-grabber.slot"),
                 hoeMenuHandler.tokenGrabber(player));
+        hoeMenu.setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.xp-gainer.slot"), hoeMenuHandler.xpGainer(player));
 
 
         player.openInventory(hoeMenu);
