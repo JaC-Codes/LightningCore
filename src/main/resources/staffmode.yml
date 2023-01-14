@@ -1,5 +1,5 @@
 StaffMode:
-  prefix: "&b[&aSC&b]"
+  prefix: "&7(&eS&7)"
   permissions:
     mode: "lc.staffmode"
     staffchat: "lc.staffmode"

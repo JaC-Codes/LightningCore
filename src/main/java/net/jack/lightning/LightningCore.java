@@ -19,6 +19,7 @@ import net.jack.lightning.harvesterhoe.upgradinghandlers.EssenceUpgrading;
 import net.jack.lightning.harvesterhoe.upgradinghandlers.TokenUpgrading;
 import net.jack.lightning.harvesterhoe.upgradinghandlers.XpGainerUpgrading;
 import net.jack.lightning.serverutils.LightningBoard;
+import net.jack.lightning.staffmode.StaffMode;
 import net.jack.lightning.staffmode.mode.ModeCommand;
 import net.jack.lightning.staffmode.mode.ModeHandler;
 import net.jack.lightning.staffmode.mode.ModeListener;
@@ -26,6 +27,7 @@ import net.jack.lightning.staffmode.staffutils.freeze.Freeze;
 import net.jack.lightning.staffmode.staffutils.freeze.FreezeCommand;
 import net.jack.lightning.staffmode.staffutils.freeze.FreezeListener;
 import net.jack.lightning.staffmode.staffutils.onlinestaffviewer.OnlineStaffListener;
+import net.jack.lightning.staffmode.staffutils.staffchat.StaffChat;
 import net.jack.lightning.staffmode.staffutils.staffchat.StaffChatCommand;
 import net.jack.lightning.staffmode.staffutils.staffchat.StaffChatListener;
 import net.jack.lightning.stattrack.TopKills;
@@ -55,7 +57,7 @@ public class LightningCore extends JavaPlugin {
     private LightningCore instance;
     private Broadcaster broadcaster;
     private ModeHandler modeHandler;
-    private Freeze freeze;
+    private StaffMode staffModeC;
 
 
     private Economy econ = null;
@@ -89,7 +91,7 @@ public class LightningCore extends JavaPlugin {
         this.topKills = new TopKills(this);
         this.broadcaster = new Broadcaster(this);
         this.modeHandler = new ModeHandler(this);
-        this.freeze = new Freeze(this);
+        this.staffModeC = new StaffMode(this);
         topKills.killTopUpdater();
         broadcaster.startTimer(getServer().getScheduler());
 
@@ -126,10 +128,9 @@ public class LightningCore extends JavaPlugin {
         return modeHandler;
     }
 
-    public Freeze getFreezeClass() {
-        return freeze;
+    public StaffMode getStaffMode() {
+        return staffModeC;
     }
-
 
     private void registerCommands() {
         getCommand("crew").setExecutor(new CrewCommandManager(this));
@@ -195,10 +196,10 @@ public class LightningCore extends JavaPlugin {
         instance = null;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (getModeHandler().containsStaffArray(player.getUniqueId())) {
-                getModeHandler().removeStaffArray(player.getUniqueId());
+            if (staffModeC.getSTAFF().contains(player.getUniqueId())) {
+                staffModeC.getSTAFF().remove(player.getUniqueId());
                 getModeHandler().exitStaffMode(player);
-                getModeHandler().getInventorySave().remove(player.getUniqueId());
+                staffModeC.getInventorySaver().remove(player.getUniqueId());
             }
         }
 

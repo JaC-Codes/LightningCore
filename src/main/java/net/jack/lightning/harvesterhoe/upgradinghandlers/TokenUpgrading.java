@@ -50,7 +50,6 @@ public class TokenUpgrading implements Listener {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.token-upgrade")));
             essence.removeEssence(player, essenceRequired);
             upgradingHandler.loopInventory(player);
-
         } else {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.insufficient-amount")));
         }

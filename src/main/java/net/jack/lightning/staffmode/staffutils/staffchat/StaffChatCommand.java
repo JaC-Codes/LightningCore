@@ -13,12 +13,10 @@ public class StaffChatCommand implements CommandExecutor {
 
 
     private final LightningCore core;
-    private final StaffChat staffChat;
 
 
     public StaffChatCommand(LightningCore core) {
         this.core = core;
-        this.staffChat = new StaffChat(core);
     }
 
     @Override
@@ -37,12 +35,12 @@ public class StaffChatCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            if (staffChat.getStaffChat().contains(player.getUniqueId())) {
-                staffChat.getStaffChat().remove(player.getUniqueId());
+            if (core.getStaffMode().getStaffChat().contains(player.getUniqueId())) {
+                core.getStaffMode().getStaffChat().remove(player.getUniqueId());
                 player.sendMessage(CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.messages.staffchat-disabled")));
                 return true;
             } else {
-                staffChat.getStaffChat().add(player.getUniqueId());
+                core.getStaffMode().getStaffChat().add(player.getUniqueId());
                 player.sendMessage(CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.messages.staffchat-enabled")));
             }
         }

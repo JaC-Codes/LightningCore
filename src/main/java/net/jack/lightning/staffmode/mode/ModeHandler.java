@@ -13,8 +13,6 @@ import java.util.UUID;
 
 public class ModeHandler {
 
-    public HashMap<UUID, ItemStack[]> inventorySaver = new HashMap<>();
-    private final List<UUID> STAFF = new ArrayList<>();
 
     private final LightningCore core;
     private final ModeBuild modeBuild;
@@ -25,8 +23,8 @@ public class ModeHandler {
     }
 
     public void enterStaffMode(Player player) {
-        STAFF.add(player.getUniqueId());
-        inventorySaver.put(player.getUniqueId(), player.getInventory().getContents());
+        core.getStaffMode().getSTAFF().add(player.getUniqueId());
+        core.getStaffMode().getInventorySaver().put(player.getUniqueId(), player.getInventory().getContents());
         player.getInventory().clear();
         modeBuild.giveStaffMode(player);
         //Need to make vanish
@@ -35,18 +33,18 @@ public class ModeHandler {
         player.setGameMode(GameMode.CREATIVE);
         player.setFlying(true);
         player.setGlowing(true);
-        player.sendMessage(CC.translate(core.getPrefix() + "&bStaff Mode enabled."));
+        player.sendMessage(CC.translate(core.getPrefix() + " &bStaff Mode enabled."));
 
     }
 
     public void exitStaffMode(Player player) {
-        STAFF.remove(player.getUniqueId());
-        player.getInventory().setContents(inventorySaver.get(player.getUniqueId()));
+        core.getStaffMode().getSTAFF().remove(player.getUniqueId());
+        player.getInventory().setContents(core.getStaffMode().getInventorySaver().get(player.getUniqueId()));
 
         player.setGameMode(GameMode.SURVIVAL);
         player.setFlying(false);
         player.setGlowing(false);
-        player.sendMessage(CC.translate(core.getPrefix() + "&bStaff Mode disabled."));
+        player.sendMessage(CC.translate(core.getPrefix() + " &bStaff Mode disabled."));
 
     }
 
@@ -56,17 +54,5 @@ public class ModeHandler {
         player.getInventory().setLeggings(null);
         player.getInventory().setBoots(null);
 
-    }
-
-    public boolean containsStaffArray(UUID player) {
-        return STAFF.contains(player);
-    }
-
-    public void removeStaffArray(UUID player) {
-        STAFF.remove(player);
-    }
-
-    public HashMap<UUID, ItemStack[]> getInventorySave() {
-        return inventorySaver;
     }
 }

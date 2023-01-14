@@ -26,7 +26,7 @@ public class OnlineStaff {
     public void openOnlineStaff(Player player) {
         inventoryFiller();
         for (Player players : Bukkit.getOnlinePlayers()) {
-            if (!core.getModeHandler().containsStaffArray(player.getUniqueId())) continue;
+            if (!core.getStaffMode().getSTAFF().contains(player.getUniqueId())) continue;
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();
             meta.setOwningPlayer(players);

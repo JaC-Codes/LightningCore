@@ -31,12 +31,12 @@ public class StaffChatListener implements Listener {
         }
 
         System.out.println("sc");
-        if (staffChat.getStaffChat().contains(player.getUniqueId())) {
+        if (core.getStaffMode().getStaffChat().contains(player.getUniqueId())) {
             event.setCancelled(true);
             for (Player staff : Bukkit.getServer().getOnlinePlayers()) {
                 if (staff.hasPermission(permCheck)) {
-                    staff.sendMessage(staffChat.getStaffChatPrefix() + " " + player.getDisplayName() +
-                            CC.translate("&b: " + CC.translate("&a " + receivedMessage)));
+                    staff.sendMessage(staffChat.getStaffChatPrefix() + CC.translate(" &e") + player.getName() +
+                            CC.translate("&7: " + CC.translate("&7" + receivedMessage)));
                 }
             }
         }

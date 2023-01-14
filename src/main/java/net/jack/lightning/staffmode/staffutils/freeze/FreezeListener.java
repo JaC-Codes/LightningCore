@@ -14,17 +14,19 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class FreezeListener implements Listener {
 
     private final LightningCore core;
+    private final Freeze freeze;
 
 
     public FreezeListener(LightningCore core) {
         this.core = core;
+        this.freeze = new Freeze(core);
     }
 
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (core.getFreezeClass().getFrozen().contains(player.getUniqueId())) {
+        if (core.getStaffMode().getFrozen().contains(player.getUniqueId())) {
             event.setTo(event.getFrom());
         }
     }
@@ -32,7 +34,7 @@ public class FreezeListener implements Listener {
     @EventHandler
     public void openPlayerInventory(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        if (core.getFreezeClass().getFrozen().contains(player.getUniqueId())) {
+        if (core.getStaffMode().getFrozen().contains(player.getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -42,7 +44,7 @@ public class FreezeListener implements Listener {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player)) return;
         Player player = (Player) event.getEntity();
-        if (core.getFreezeClass().getFrozen().contains(player.getUniqueId())) {
+        if (core.getStaffMode().getFrozen().contains(player.getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -55,10 +57,10 @@ public class FreezeListener implements Listener {
         if (permCheck == null) {
             System.out.println("Perm check for freeze not found");
         }
-        if (!core.getFreezeClass().getFrozen().contains(player.getUniqueId())) return;
+        if (!core.getStaffMode().getFrozen().contains(player.getUniqueId())) return;
         for (Player players : Bukkit.getServer().getOnlinePlayers()) {
             if (!players.hasPermission(permCheck)) return;
-            core.getFreezeClass().disconnectedWhileFrozen(players);
+            freeze.disconnectedWhileFrozen(players);
         }
     }
 

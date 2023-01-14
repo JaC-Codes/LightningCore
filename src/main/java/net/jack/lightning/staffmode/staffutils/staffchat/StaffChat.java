@@ -11,7 +11,6 @@ public class StaffChat {
 
     private final LightningCore core;
 
-    private List<UUID> staffChat = new ArrayList<>();
 
 
     public StaffChat(LightningCore core) {
@@ -22,7 +21,4 @@ public class StaffChat {
         return CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.prefix"));
     }
 
-    public List<UUID> getStaffChat() {
-        return staffChat;
-    }
 }

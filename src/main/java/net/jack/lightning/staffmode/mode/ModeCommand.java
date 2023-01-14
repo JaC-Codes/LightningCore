@@ -32,7 +32,7 @@ public class ModeCommand implements CommandExecutor {
             player.sendMessage(CC.translate("&cYou do not have permission to use this command."));
         }
 
-        if (!core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+        if (!core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
             core.getModeHandler().enterStaffMode(player);
             return true;
         } else {

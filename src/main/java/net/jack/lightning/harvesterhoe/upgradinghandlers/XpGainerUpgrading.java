@@ -23,8 +23,8 @@ public class XpGainerUpgrading implements Listener {
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
     private final UpgradingHandler upgradingHandler;
-    private final Tokens tokens;
-    private int tokensXpRequired;
+    private final Essence essence;
+    private int essenceRequired;
 
     private final NamespacedKey key;
     private final NamespacedKey xpgainer;
@@ -33,7 +33,7 @@ public class XpGainerUpgrading implements Listener {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
         this.upgradingHandler = new UpgradingHandler(core);
-        this.tokens = new Tokens(core);
+        this.essence = new Essence(core);
 
         this.key = new NamespacedKey(core, "hoe");
         this.xpgainer = new NamespacedKey(core, "xpgainer");
@@ -65,11 +65,11 @@ public class XpGainerUpgrading implements Listener {
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;
         ItemMeta meta = event.getCurrentItem().getItemMeta();
         if (!meta.getPersistentDataContainer().has(xpgainer, PersistentDataType.STRING)) return;
-        tokensXpRequired = enchantProfile.getXpGainerLevel(player) * 30;
-        if (tokens.getTokens(player) >= tokensXpRequired) {
+        essenceRequired = enchantProfile.getXpGainerLevel(player) * 120; // times level by 30
+        if (essence.getEssence(player) >= essenceRequired) { // if player has more or equal to amount of tokens
             enchantProfile.addXpGainerLevel(player, 1);
-            player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.essence-upgrade")));
-            tokens.removeTokens(player, tokensXpRequired);
+            player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.xpgainer-upgrade")));
+            essence.removeEssence(player, essenceRequired);
             upgradingHandler.loopInventory(player);
         } else {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.insufficient-amount")));
@@ -77,6 +77,6 @@ public class XpGainerUpgrading implements Listener {
     }
 
     public int getTokensXpRequired() {
-        return tokensXpRequired;
+        return essenceRequired;
     }
 }

@@ -23,8 +23,8 @@ public class ModeListener implements Listener {
 
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
-            core.getModeHandler().removeStaffArray(player.getUniqueId());
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
+            core.getStaffMode().getSTAFF().remove(player.getUniqueId());
             core.getModeHandler().exitStaffMode(player);
         }
     }
@@ -32,8 +32,8 @@ public class ModeListener implements Listener {
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
-            core.getModeHandler().removeStaffArray(player.getUniqueId());
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
+            core.getStaffMode().getSTAFF().remove(player.getUniqueId());
             core.getModeHandler().exitStaffMode(player);
         }
     }
@@ -41,7 +41,7 @@ public class ModeListener implements Listener {
     @EventHandler
     public void blockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendMessage(CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.messages.block-break")));
         }
@@ -50,7 +50,7 @@ public class ModeListener implements Listener {
     @EventHandler
     public void itemDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -58,7 +58,7 @@ public class ModeListener implements Listener {
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -66,7 +66,7 @@ public class ModeListener implements Listener {
     @EventHandler
     public void itemPickup(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -74,7 +74,7 @@ public class ModeListener implements Listener {
     @EventHandler
     public void blockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+        if (core.getStaffMode().getSTAFF().contains(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendMessage(CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.messages.block-place")));
         }

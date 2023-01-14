@@ -118,7 +118,7 @@ public class HoeMenuHandler {
     public ItemStack xpGainer(Player player) {
         ItemStack item = new ItemStack(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.xp-gainer.item")));
         ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(tokenGrab, PersistentDataType.STRING, "xpgainer");
+        meta.getPersistentDataContainer().set(xpgainer, PersistentDataType.STRING, "xpgainer");
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.setDisplayName(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.xp-gainer.name"))
                 .replace("%xpgainer%", EnumEnchants.XP_GAINER.getDisplayName()));
@@ -126,7 +126,7 @@ public class HoeMenuHandler {
         for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("HoeMenu.inventory.xp-gainer.lore")) {
             lore.add(CC.translate(l)
                     .replace("%xpgainlevel%", String.valueOf(enchantProfile.getXpGainerLevel(player)))
-                    .replace("%xpgainer-upgrade-cost%", String.valueOf(enchantProfile.getXpGainerLevel(player) * 30)));
+                    .replace("%xpgainer-upgrade-cost%", String.valueOf(enchantProfile.getXpGainerLevel(player) * 120)));
         }
         meta.setLore(lore);
         item.setItemMeta(meta);

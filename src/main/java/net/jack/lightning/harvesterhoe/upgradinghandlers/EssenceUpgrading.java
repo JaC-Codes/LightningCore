@@ -2,6 +2,7 @@ package net.jack.lightning.harvesterhoe.upgradinghandlers;
 
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
+import net.jack.lightning.harvesterhoe.essence.Essence;
 import net.jack.lightning.harvesterhoe.tokens.Tokens;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.NamespacedKey;
@@ -17,9 +18,9 @@ public class EssenceUpgrading implements Listener {
 
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
-    private final Tokens tokens;
+    private final Essence essence;
     private final UpgradingHandler upgradingHandler;
-    private int tokensRequired;
+    private int essenceRequired;
 
 
     private final NamespacedKey essUpgrade;
@@ -30,7 +31,7 @@ public class EssenceUpgrading implements Listener {
     public EssenceUpgrading(LightningCore core) {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
-        this.tokens = new Tokens(core);
+        this.essence = new Essence(core);
         this.upgradingHandler = new UpgradingHandler(core);
 
         this.essUpgrade = new NamespacedKey(core, "essupgrade");
@@ -47,11 +48,11 @@ public class EssenceUpgrading implements Listener {
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;
         ItemMeta meta = event.getCurrentItem().getItemMeta();
         if (!meta.getPersistentDataContainer().has(essUpgrade, PersistentDataType.STRING)) return;
-        tokensRequired = enchantProfile.getEssenceEnhanceLevel(player) * 50;
-        if (tokens.getTokens(player) >= tokensRequired) {
+        essenceRequired = enchantProfile.getEssenceEnhanceLevel(player) * 50;
+        if (essence.getEssence(player) >= essenceRequired) {
             enchantProfile.addEssenceEnhanceLevel(player, 1);
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.essence-upgrade")));
-            tokens.removeTokens(player, tokensRequired);
+            essence.removeEssence(player, essenceRequired);
             upgradingHandler.loopInventory(player);
         } else {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.insufficient-amount")));

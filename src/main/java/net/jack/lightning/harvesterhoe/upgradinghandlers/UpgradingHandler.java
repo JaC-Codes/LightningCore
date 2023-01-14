@@ -42,7 +42,9 @@ public class UpgradingHandler {
                             .replace("%tokengrabber%", EnumEnchants.TOKEN_GRABBER.getDisplayName())
                             .replace("%tokenlevel%", String.valueOf(enchantProfile.getTokenGrabberLevel(player)))
                             .replace("%essenceenhancer%", EnumEnchants.ESSENCE_ENHANCER.getDisplayName())
-                            .replace("%essencelevel%", String.valueOf(enchantProfile.getEssenceEnhanceLevel(player))));
+                            .replace("%essencelevel%", String.valueOf(enchantProfile.getEssenceEnhanceLevel(player)))
+                            .replace("%xpgainer%", EnumEnchants.XP_GAINER.getDisplayName())
+                            .replace("%xpgainerlevel%", String.valueOf(enchantProfile.getXpGainerLevel(player))));
                 }
                 hoeMeta.setLore(lore);
                 item.setItemMeta(hoeMeta);

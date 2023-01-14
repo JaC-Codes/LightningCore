@@ -12,9 +12,11 @@ import org.jetbrains.annotations.NotNull;
 public class FreezeCommand implements CommandExecutor {
 
     private final LightningCore core;
+    private final Freeze freeze;
 
     public FreezeCommand(LightningCore core) {
         this.core = core;
+        this.freeze = new Freeze(core);
     }
 
     @Override
@@ -40,11 +42,11 @@ public class FreezeCommand implements CommandExecutor {
         if (target == null) {
             sender.sendMessage(CC.translate("&cPlayer was not found"));
         } else {
-            var playerFrozen = core.getFreezeClass().getFrozen();
+            var playerFrozen = core.getStaffMode().getFrozen();
             var targetUI = target.getUniqueId();
             if (!playerFrozen.contains(targetUI)) {
                 playerFrozen.add(targetUI);
-                core.getFreezeClass().frozenMessage(target);
+                freeze.frozenMessage(target);
                 sender.sendMessage(CC.translate("&7You have frozen &e" + target.getName() + "&7."));
                 return true;
             } else {

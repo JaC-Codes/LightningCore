@@ -16,6 +16,7 @@ HarvesterHoe:
       - ""
       - "&a&l%tokengrabber% %tokenlevel%"
       - "&b&l%essenceenhancer% %essencelevel%"
+      - "&e&l%xpgainer% %xpgainerlevel%"
 MainMenu:
   inventory:
     size: 27
@@ -73,7 +74,7 @@ HoeMenu:
       lore:
         - ""
         - "&fCurrent Level: &e%tokenlevel%"
-        - "&fUpgrade: &e%token-upgrade-cost% &aTokens"
+        - "&fUpgrade: &e%token-upgrade-cost% &bEssence"
       slot: 2
     xp-gainer:
       item: "EXPERIENCE_BOTTLE"
@@ -81,7 +82,7 @@ HoeMenu:
       lore:
         - ""
         - "&fCurrent Level: &e%xpgainlevel%"
-        - "&fUpgrade: &e%xpgainer-upgrade-cost% &aTokens"
+        - "&fUpgrade: &e%xpgainer-upgrade-cost% &bEssence"
       slot: 3
 Usage:
   - "&7---------------------------------------------------"
@@ -122,5 +123,6 @@ Messages:
   Token-Received: "&7You have received &6%amount% &7token"
   #####################################################################
   token-upgrade: "&aYou have redeemed one token level"
+  xpgainer-upgrade: "&aYou have redeemed one xp-gainer level"
   essence-upgrade: "&bYou have redeemed one essence level"
   insufficient-amount: "&cYou do not have enough to upgrade"
