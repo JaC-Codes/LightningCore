@@ -32,8 +32,10 @@ public class ModeListener implements Listener {
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        core.getModeHandler().removeStaffArray(player.getUniqueId());
-        core.getModeHandler().exitStaffMode(player);
+        if (core.getModeHandler().containsStaffArray(player.getUniqueId())) {
+            core.getModeHandler().removeStaffArray(player.getUniqueId());
+            core.getModeHandler().exitStaffMode(player);
+        }
     }
 
     @EventHandler

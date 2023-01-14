@@ -1,6 +1,7 @@
 package net.jack.lightning.staffmode.staffutils.onlinestaffviewer;
 
 import net.jack.lightning.LightningCore;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,11 +30,16 @@ public class OnlineStaffListener implements Listener {
     public void osInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
-        var action = event.getAction().equals(Action.RIGHT_CLICK_AIR) || (event.getAction().equals(Action.RIGHT_CLICK_BLOCK));
+        if (item == null) return;
+        Material material = item.getType();
+        var action = event.getAction() == (Action.RIGHT_CLICK_AIR) || event.getAction() == (Action.RIGHT_CLICK_BLOCK);
+        if (material == Material.AIR) return;
+        if (!(material == Material.ENDER_EYE)) return;
         ItemMeta meta = item.getItemMeta();
-        if (!meta.getPersistentDataContainer().has(onlineStaffKey, PersistentDataType.STRING)) return;
-        if (action) {
+        if (meta == null) return;
+        if (action && meta.getPersistentDataContainer().has(onlineStaffKey, PersistentDataType.STRING)) {
             onlineStaff.openOnlineStaff(player);
+            event.setCancelled(true);
         }
     }
 }

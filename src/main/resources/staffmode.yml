@@ -3,6 +3,7 @@ StaffMode:
   permissions:
     mode: "lc.staffmode"
     staffchat: "lc.staffmode"
+    freeze: "lc.staffmode"
   messages:
     block-place: "&cYou cannot place blocks in staff mode."
     block-break: "&cYou cannot break blocks in staff mode."
@@ -21,5 +22,20 @@ StaffMode:
     inventory-view:
       name: "&d&lInventory Viewer"
       slot: 8
-  onlinestaff:
-    title: "&bOnline Staff"
+  online-staff:
+    inventory:
+      title: "&bOnline Staff"
+      size: 36
+  freeze:
+    messages:
+      frozen-message:
+        - "&f█████████"
+        - "&f████&c█&f████"
+        - "&f███&c█&0█&c█&f███"
+        - "&f██&c█&6█&0█&6█&c█&f██"
+        - "&f██&c█&6█&0█&6█&c█&f██ &eYou have been frozen by a staff member."
+        - "&f██&c█&6█&0█&6█&c█&f██ &eIf you disconnect you will be &4&lBANNED&e."
+        - "&f█&c█&6█████&c█&f█ &ePlease connect to our TeamSpeak."
+        - "&c█&6███&0█&6███&c█ &7input ip"
+        - "&c█████████"
+        - "&f█████████"

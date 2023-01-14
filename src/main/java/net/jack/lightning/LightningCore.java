@@ -22,6 +22,9 @@ import net.jack.lightning.serverutils.LightningBoard;
 import net.jack.lightning.staffmode.mode.ModeCommand;
 import net.jack.lightning.staffmode.mode.ModeHandler;
 import net.jack.lightning.staffmode.mode.ModeListener;
+import net.jack.lightning.staffmode.staffutils.freeze.Freeze;
+import net.jack.lightning.staffmode.staffutils.freeze.FreezeCommand;
+import net.jack.lightning.staffmode.staffutils.freeze.FreezeListener;
 import net.jack.lightning.staffmode.staffutils.onlinestaffviewer.OnlineStaffListener;
 import net.jack.lightning.staffmode.staffutils.staffchat.StaffChatCommand;
 import net.jack.lightning.staffmode.staffutils.staffchat.StaffChatListener;
@@ -52,6 +55,7 @@ public class LightningCore extends JavaPlugin {
     private LightningCore instance;
     private Broadcaster broadcaster;
     private ModeHandler modeHandler;
+    private Freeze freeze;
 
 
     private Economy econ = null;
@@ -85,6 +89,7 @@ public class LightningCore extends JavaPlugin {
         this.topKills = new TopKills(this);
         this.broadcaster = new Broadcaster(this);
         this.modeHandler = new ModeHandler(this);
+        this.freeze = new Freeze(this);
         topKills.killTopUpdater();
         broadcaster.startTimer(getServer().getScheduler());
 
@@ -94,12 +99,12 @@ public class LightningCore extends JavaPlugin {
 
         }
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
-            try{
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            try {
                 getLogger().info("Trying to load PAPI expansion...");
                 new PAPIExpansions(this).register();
                 getLogger().info("Success!");
-            } catch (Exception e){
+            } catch (Exception e) {
                 getLogger().severe("Failed!");
                 e.printStackTrace();
             }
@@ -121,6 +126,10 @@ public class LightningCore extends JavaPlugin {
         return modeHandler;
     }
 
+    public Freeze getFreezeClass() {
+        return freeze;
+    }
+
 
     private void registerCommands() {
         getCommand("crew").setExecutor(new CrewCommandManager(this));
@@ -133,6 +142,7 @@ public class LightningCore extends JavaPlugin {
         getCommand("tokens").setExecutor(new TokensBalanceCommand(this));
         getCommand("staffmode").setExecutor(new ModeCommand(this));
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
+        getCommand("freeze").setExecutor(new FreezeCommand(this));
     }
 
     private void registerEvents() {
@@ -149,6 +159,7 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new ModeListener(this), this);
         manager.registerEvents(new StaffChatListener(this), this);
         manager.registerEvents(new OnlineStaffListener(this), this);
+        manager.registerEvents(new FreezeListener(this), this);
     }
 
     private boolean setupEconomy() {
@@ -183,13 +194,13 @@ public class LightningCore extends JavaPlugin {
     public void onDisable() {
         instance = null;
 
-       for (Player player : Bukkit.getOnlinePlayers()) {
-           if (getModeHandler().containsStaffArray(player.getUniqueId())) {
-               getModeHandler().removeStaffArray(player.getUniqueId());
-               getModeHandler().exitStaffMode(player);
-               getModeHandler().getInventorySave().remove(player.getUniqueId());
-           }
-       }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (getModeHandler().containsStaffArray(player.getUniqueId())) {
+                getModeHandler().removeStaffArray(player.getUniqueId());
+                getModeHandler().exitStaffMode(player);
+                getModeHandler().getInventorySave().remove(player.getUniqueId());
+            }
+        }
 
 
         this.Config();
@@ -208,7 +219,7 @@ public class LightningCore extends JavaPlugin {
     }
 
     public void reloadHarvesterHoe() {
-       YamlConfiguration harvester = YamlConfiguration.loadConfiguration(harvesterHoe);
+        YamlConfiguration harvester = YamlConfiguration.loadConfiguration(harvesterHoe);
 
         final InputStream defConfigStream = getResource("harvesterhoe.yml");
         if (defConfigStream == null) {

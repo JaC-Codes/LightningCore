@@ -34,3 +34,5 @@ commands:
     description: Staff chat
     aliases:
       - sc
+  freeze:
+    description: Freeze player

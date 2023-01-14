@@ -18,28 +18,30 @@ public class OnlineStaff {
 
     public OnlineStaff(LightningCore core) {
         this.core = core;
-        onlineStaff = Bukkit.createInventory(null, this.core.getStaffModeConfiguration().getInt("StaffMode.onlinestaff.inventory.size"),
-                CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.onlinestaff.inventory.title")));
+        onlineStaff = Bukkit.createInventory(null, this.core.getStaffModeConfiguration().getInt("StaffMode.online-staff.inventory.size"),
+                CC.translate(this.core.getStaffModeConfiguration().getString("StaffMode.online-staff.inventory.title")));
     }
 
 
     public void openOnlineStaff(Player player) {
         inventoryFiller();
         for (Player players : Bukkit.getOnlinePlayers()) {
-            if (!core.getModeHandler().containsStaffArray(player.getUniqueId())) return;
+            if (!core.getModeHandler().containsStaffArray(player.getUniqueId())) continue;
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();
             meta.setOwningPlayer(players);
             meta.setDisplayName(CC.translate("&c" + players.getName()));
             skull.setItemMeta(meta);
-            if (onlineStaff.contains(skull)) return;
+            if (onlineStaff.contains(skull)) continue;
             int i = onlineStaff.firstEmpty();
             onlineStaff.setItem(i, skull);
+
             }
+        player.openInventory(onlineStaff);
         }
 
     public void inventoryFiller() {
-        int invSize = (this.core.getStaffModeConfiguration().getInt("StaffMode.onlineStaff.inventory.size"));
+        int invSize = (this.core.getStaffModeConfiguration().getInt("StaffMode.online-staff.inventory.size"));
         ItemStack item = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(" ");
@@ -54,4 +56,7 @@ public class OnlineStaff {
             }
         }
     }
+
+    // 0, 2, 1, 9 (36 slots)
+    // 0 tick, 1,
 }
