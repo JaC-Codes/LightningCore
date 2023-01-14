@@ -47,7 +47,7 @@ public class MenuEvents implements Listener {
         Player player = (Player) event.getWhoClicked();
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         if (event.getView().getTitle().equals(CC.translate(this.core.getHarvesterHoeConfiguration().getString("MainMenu.inventory.title"))) ||
-                event.getView().getTitle().equalsIgnoreCase("HoeMenu.inventory.title")) {
+                event.getView().getTitle().equals(CC.translate(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.title")))) {
             event.setCancelled(true);
         }
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;
@@ -62,20 +62,20 @@ public class MenuEvents implements Listener {
             }
         }
 
- //   @EventHandler
- //   public void onInventoryClose(InventoryCloseEvent event) {
-   //     Player player = (Player) event.getPlayer();
-   //    if (event.getView().getTitle().equalsIgnoreCase(CC.translate(this.core.getHarvesterHoeConfiguration()
-     //           .getString("HoeMenu.inventory.title")))) {
-      //      new BukkitRunnable() {
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+       if (event.getView().getTitle().equalsIgnoreCase(CC.translate(this.core.getHarvesterHoeConfiguration()
+                .getString("HoeMenu.inventory.title")))) {
+            new BukkitRunnable() {
 
-        //        @Override
-          //      public void run() {
-         //           mainMenu.openMainMenu(player);
-         //       }
-        //    }.runTaskLater(core, 5L);
-      //  }
-   // }
+                @Override
+                public void run() {
+                    mainMenu.openMainMenu(player);
+                }
+            }.runTaskLater(core, 5L);
+        }
+    }
 
     public void loopInventory(Player player) {
         for (int i = 0; i < player.getInventory().getSize(); i++) {

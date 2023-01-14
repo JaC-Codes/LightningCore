@@ -24,3 +24,13 @@ commands:
     description: Display balance
   tokens:
     description: Display balance
+  staffmode:
+    description: Staff mode
+    aliases:
+      - mode
+      - mod
+      - sm
+  staffchat:
+    description: Staff chat
+    aliases:
+      - sc

@@ -19,6 +19,12 @@ import net.jack.lightning.harvesterhoe.upgradinghandlers.EssenceUpgrading;
 import net.jack.lightning.harvesterhoe.upgradinghandlers.TokenUpgrading;
 import net.jack.lightning.harvesterhoe.upgradinghandlers.XpGainerUpgrading;
 import net.jack.lightning.serverutils.LightningBoard;
+import net.jack.lightning.staffmode.mode.ModeCommand;
+import net.jack.lightning.staffmode.mode.ModeHandler;
+import net.jack.lightning.staffmode.mode.ModeListener;
+import net.jack.lightning.staffmode.staffutils.onlinestaffviewer.OnlineStaffListener;
+import net.jack.lightning.staffmode.staffutils.staffchat.StaffChatCommand;
+import net.jack.lightning.staffmode.staffutils.staffchat.StaffChatListener;
 import net.jack.lightning.stattrack.TopKills;
 import net.jack.lightning.stattrack.commands.Leaderboard;
 import net.jack.lightning.stattrack.listeners.Events;
@@ -28,6 +34,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,7 +51,11 @@ public class LightningCore extends JavaPlugin {
 
     private LightningCore instance;
     private Broadcaster broadcaster;
+    private ModeHandler modeHandler;
+
+
     private Economy econ = null;
+
 
     private final File crews = new File(getDataFolder(), "crews.yml");
     private final File crewSettings = new File(getDataFolder(), "crewsettings.yml");
@@ -54,8 +65,10 @@ public class LightningCore extends JavaPlugin {
     private final File essence = new File(getDataFolder(), "essence.yml");
     private final File tokens = new File(getDataFolder(), "tokens.yml");
     private final File enchants = new File(getDataFolder(), "enchantdata.yml");
+    private final File staffMode = new File(getDataFolder(), "staffmode.yml");
 
 
+    private final FileConfiguration staffModeConfiguration = YamlConfiguration.loadConfiguration(staffMode);
     private final FileConfiguration enchantConfiguration = YamlConfiguration.loadConfiguration(enchants);
     private final FileConfiguration essenceConfiguration = YamlConfiguration.loadConfiguration(essence);
     private final FileConfiguration tokensConfiguration = YamlConfiguration.loadConfiguration(tokens);
@@ -71,6 +84,7 @@ public class LightningCore extends JavaPlugin {
         this.Config();
         this.topKills = new TopKills(this);
         this.broadcaster = new Broadcaster(this);
+        this.modeHandler = new ModeHandler(this);
         topKills.killTopUpdater();
         broadcaster.startTimer(getServer().getScheduler());
 
@@ -103,6 +117,10 @@ public class LightningCore extends JavaPlugin {
 
     }
 
+    public ModeHandler getModeHandler() {
+        return modeHandler;
+    }
+
 
     private void registerCommands() {
         getCommand("crew").setExecutor(new CrewCommandManager(this));
@@ -113,6 +131,8 @@ public class LightningCore extends JavaPlugin {
         getCommand("harvesterhoe").setExecutor(new CommandManager(this));
         getCommand("essence").setExecutor(new EssenceBalanceCommand(this));
         getCommand("tokens").setExecutor(new TokensBalanceCommand(this));
+        getCommand("staffmode").setExecutor(new ModeCommand(this));
+        getCommand("staffchat").setExecutor(new StaffChatCommand(this));
     }
 
     private void registerEvents() {
@@ -126,6 +146,9 @@ public class LightningCore extends JavaPlugin {
         manager.registerEvents(new EssenceUpgrading(this), this);
         manager.registerEvents(new TokenUpgrading(this), this);
         manager.registerEvents(new XpGainerUpgrading(this), this);
+        manager.registerEvents(new ModeListener(this), this);
+        manager.registerEvents(new StaffChatListener(this), this);
+        manager.registerEvents(new OnlineStaffListener(this), this);
     }
 
     private boolean setupEconomy() {
@@ -152,12 +175,23 @@ public class LightningCore extends JavaPlugin {
         new Config(essence, essenceConfiguration, "essence.yml", this);
         new Config(tokens, tokensConfiguration, "tokens.yml", this);
         new Config(enchants, enchantConfiguration, "enchantdata.yml", this);
+        new Config(staffMode, staffModeConfiguration, "staffmode.yml", this);
 
     }
 
 
     public void onDisable() {
         instance = null;
+
+       for (Player player : Bukkit.getOnlinePlayers()) {
+           if (getModeHandler().containsStaffArray(player.getUniqueId())) {
+               getModeHandler().removeStaffArray(player.getUniqueId());
+               getModeHandler().exitStaffMode(player);
+               getModeHandler().getInventorySave().remove(player.getUniqueId());
+           }
+       }
+
+
         this.Config();
         long duration = System.currentTimeMillis();
         String prefix = "§3[" + getDescription().getName() + " " + getDescription().getVersion() + "] ";

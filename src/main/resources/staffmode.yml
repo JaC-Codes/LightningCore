@@ -1,0 +1,25 @@
+StaffMode:
+  prefix: "&b[&aSC&b]"
+  permissions:
+    mode: "lc.staffmode"
+    staffchat: "lc.staffmode"
+  messages:
+    block-place: "&cYou cannot place blocks in staff mode."
+    block-break: "&cYou cannot break blocks in staff mode."
+    staffchat-enabled: "&aStaff Chat enabled."
+    staffchat-disabled: "&cStaff Chat disabled."
+  mode:
+    compass:
+      name: "&a&lCompass"
+      slot: 0
+    freeze:
+      name: "&e&lFreeze"
+      slot: 1
+    online-staff:
+      name: "&b&lOnline Staff"
+      slot: 2
+    inventory-view:
+      name: "&d&lInventory Viewer"
+      slot: 8
+  onlinestaff:
+    title: "&bOnline Staff"

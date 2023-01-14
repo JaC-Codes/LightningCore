@@ -4,7 +4,6 @@ import net.jack.lightning.LightningCore;
 import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
 import net.jack.lightning.harvesterhoe.customenchants.EnumEnchants;
 import net.jack.lightning.harvesterhoe.menus.HoeMenu;
-import net.jack.lightning.harvesterhoe.menus.menuhandlers.HoeMenuHandler;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -20,16 +19,12 @@ public class UpgradingHandler {
 
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
-    private final HoeMenu hoeMenu;
-    private final HoeMenuHandler hoeMenuHandler;
 
     private final NamespacedKey key;
 
     public UpgradingHandler(LightningCore core) {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
-        this.hoeMenu = new HoeMenu(core);
-        this.hoeMenuHandler = new HoeMenuHandler(core);
 
         this.key = new NamespacedKey(core, "hoe");
     }
@@ -51,21 +46,22 @@ public class UpgradingHandler {
                 }
                 hoeMeta.setLore(lore);
                 item.setItemMeta(hoeMeta);
-                hoeMenu.updateHoeMenu(player);
             }
         }
     }
 
-    public void updater(Player player) {
-        hoeMenu.getHoeMenu().remove(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.essence-enhancer.item")));
-        hoeMenu.getHoeMenu().remove(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.token-grabber.item")));
-        hoeMenu.getHoeMenu().remove(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.xp-gainer.item")));
+  //  public void updater(Player player) {
+    //    hoeMenu.getHoeMenu().remove(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.essence-enhancer.item")));
+     //   hoeMenu.getHoeMenu().remove(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.token-grabber.item")));
+     //   hoeMenu.getHoeMenu().remove(Material.valueOf(this.core.getHarvesterHoeConfiguration().getString("HoeMenu.inventory.xp-gainer.item")));
 
-        hoeMenu.getHoeMenu().setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.essence-enhancer.slot"),
-                hoeMenuHandler.essenceEnhancer(player));
-        hoeMenu.getHoeMenu().setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.token-grabber.slot"),
-                hoeMenuHandler.tokenGrabber(player));
-        hoeMenu.getHoeMenu().setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.xp-gainer.slot"),
-                hoeMenuHandler.tokenGrabber(player));
-    }
+     //   hoeMenu.getHoeMenu().setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.essence-enhancer.slot"),
+      //          hoeMenuHandler.essenceEnhancer(player));
+     //   hoeMenu.getHoeMenu().setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.token-grabber.slot"),
+      //          hoeMenuHandler.tokenGrabber(player));
+     //   hoeMenu.getHoeMenu().setItem(this.core.getHarvesterHoeConfiguration().getInt("HoeMenu.inventory.xp-gainer.slot"),
+      //          hoeMenuHandler.tokenGrabber(player));
+
+ //       hoeMenu.updateHoeMenu(player);
+  //  }
 }

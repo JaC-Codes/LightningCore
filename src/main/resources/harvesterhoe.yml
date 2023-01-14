@@ -45,7 +45,7 @@ MainMenu:
         slot: 15
 HoeMenu:
   inventory:
-    title: "&e&lHarvesterHoes"
+    title: "&e&lHoe Menu"
     size: 9
     auto-sell:
       disabled-item: "RED_STAINED_GLASS_PANE"
@@ -60,11 +60,12 @@ HoeMenu:
         - "&cEnable/Disable auto sell mode"
       slot: 0
     essence-enhancer:
-      item: "SUGAR_CANE"
+      item: "CLAY_BALL"
       name: "&b&l%essenceenhancer%"
       lore:
         - ""
         - "&fCurrent Level: &e%essencelevel%"
+        - "&fUpgrade: &e%essence-upgrade-cost% &bEssence"
       slot: 1
     token-grabber:
       item: "FIRE_CHARGE"
@@ -72,6 +73,7 @@ HoeMenu:
       lore:
         - ""
         - "&fCurrent Level: &e%tokenlevel%"
+        - "&fUpgrade: &e%token-upgrade-cost% &aTokens"
       slot: 2
     xp-gainer:
       item: "EXPERIENCE_BOTTLE"
@@ -79,6 +81,7 @@ HoeMenu:
       lore:
         - ""
         - "&fCurrent Level: &e%xpgainlevel%"
+        - "&fUpgrade: &e%xpgainer-upgrade-cost% &aTokens"
       slot: 3
 Usage:
   - "&7---------------------------------------------------"

@@ -2,8 +2,6 @@ package net.jack.lightning.harvesterhoe.upgradinghandlers;
 
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
-import net.jack.lightning.harvesterhoe.menus.HoeMenu;
-import net.jack.lightning.harvesterhoe.menus.menuhandlers.HoeMenuHandler;
 import net.jack.lightning.harvesterhoe.tokens.Tokens;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.NamespacedKey;
@@ -20,26 +18,26 @@ public class EssenceUpgrading implements Listener {
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
     private final Tokens tokens;
-    private final HoeMenu hoeMenu;
-    private final HoeMenuHandler hoeMenuHandler;
     private final UpgradingHandler upgradingHandler;
+    private int tokensRequired;
 
 
     private final NamespacedKey essUpgrade;
     private final NamespacedKey key;
 
 
+
     public EssenceUpgrading(LightningCore core) {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
         this.tokens = new Tokens(core);
-        this.hoeMenu = new HoeMenu(core);
-        this.hoeMenuHandler = new HoeMenuHandler(core);
         this.upgradingHandler = new UpgradingHandler(core);
 
         this.essUpgrade = new NamespacedKey(core, "essupgrade");
         this.key = new NamespacedKey(core, "hoe");
+
     }
+
 
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
@@ -49,13 +47,12 @@ public class EssenceUpgrading implements Listener {
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;
         ItemMeta meta = event.getCurrentItem().getItemMeta();
         if (!meta.getPersistentDataContainer().has(essUpgrade, PersistentDataType.STRING)) return;
-        int levelsRequired = enchantProfile.getTokenGrabberLevel(player) * 30;
-        if (tokens.getTokens(player) >= levelsRequired) {
+        tokensRequired = enchantProfile.getEssenceEnhanceLevel(player) * 50;
+        if (tokens.getTokens(player) >= tokensRequired) {
             enchantProfile.addEssenceEnhanceLevel(player, 1);
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.essence-upgrade")));
-            tokens.removeTokens(player, levelsRequired);
+            tokens.removeTokens(player, tokensRequired);
             upgradingHandler.loopInventory(player);
-            upgradingHandler.updater(player);
         } else {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.insufficient-amount")));
         }

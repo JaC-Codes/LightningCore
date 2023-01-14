@@ -3,6 +3,9 @@ package net.jack.lightning.harvesterhoe.menus.menuhandlers;
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
 import net.jack.lightning.harvesterhoe.customenchants.EnumEnchants;
+import net.jack.lightning.harvesterhoe.upgradinghandlers.EssenceUpgrading;
+import net.jack.lightning.harvesterhoe.upgradinghandlers.TokenUpgrading;
+import net.jack.lightning.harvesterhoe.upgradinghandlers.XpGainerUpgrading;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -20,6 +23,9 @@ public class HoeMenuHandler {
 
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
+    private final EssenceUpgrading essenceUpgrading;
+    private final TokenUpgrading tokenUpgrading;
+    private final XpGainerUpgrading xpGainerUpgrading;
 
     private final NamespacedKey autoSellKey;
     private final NamespacedKey asenabled;
@@ -31,6 +37,9 @@ public class HoeMenuHandler {
     public HoeMenuHandler(LightningCore core) {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
+        this.essenceUpgrading = new EssenceUpgrading(core);
+        this.tokenUpgrading = new TokenUpgrading(core);
+        this.xpGainerUpgrading = new XpGainerUpgrading(core);
 
         this.autoSellKey = new NamespacedKey(core, "autosell");
         this.asenabled = new NamespacedKey(core, "asenabled");
@@ -80,7 +89,8 @@ public class HoeMenuHandler {
         List<String> lore = new ArrayList<>();
         for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("HoeMenu.inventory.essence-enhancer.lore")) {
             lore.add(CC.translate(l)
-                    .replace("%essencelevel%", String.valueOf(enchantProfile.getEssenceEnhanceLevel(player))));
+                    .replace("%essencelevel%", String.valueOf(enchantProfile.getEssenceEnhanceLevel(player)))
+                    .replace("%essence-upgrade-cost%", String.valueOf(enchantProfile.getEssenceEnhanceLevel(player) * 50)));
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -97,7 +107,8 @@ public class HoeMenuHandler {
         List<String> lore = new ArrayList<>();
         for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("HoeMenu.inventory.token-grabber.lore")) {
             lore.add(CC.translate(l)
-                    .replace("%tokenlevel%", String.valueOf(enchantProfile.getTokenGrabberLevel(player))));
+                    .replace("%tokenlevel%", String.valueOf(enchantProfile.getTokenGrabberLevel(player)))
+                    .replace("%token-upgrade-cost%", String.valueOf(enchantProfile.getTokenGrabberLevel(player) * 100)));
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -114,7 +125,8 @@ public class HoeMenuHandler {
         List<String> lore = new ArrayList<>();
         for (final String l : this.core.getHarvesterHoeConfiguration().getStringList("HoeMenu.inventory.xp-gainer.lore")) {
             lore.add(CC.translate(l)
-                    .replace("%xpgainlevel%", String.valueOf(enchantProfile.getXpGainerLevel(player))));
+                    .replace("%xpgainlevel%", String.valueOf(enchantProfile.getXpGainerLevel(player)))
+                    .replace("%xpgainer-upgrade-cost%", String.valueOf(enchantProfile.getXpGainerLevel(player) * 30)));
         }
         meta.setLore(lore);
         item.setItemMeta(meta);

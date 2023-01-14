@@ -3,6 +3,7 @@ package net.jack.lightning.harvesterhoe.upgradinghandlers;
 import net.jack.lightning.LightningCore;
 import net.jack.lightning.harvesterhoe.customenchants.EnchantProfile;
 import net.jack.lightning.harvesterhoe.essence.Essence;
+import net.jack.lightning.harvesterhoe.tokens.Tokens;
 import net.jack.lightning.utilities.CC;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +23,8 @@ public class XpGainerUpgrading implements Listener {
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
     private final UpgradingHandler upgradingHandler;
-    private final Essence essence;
+    private final Tokens tokens;
+    private int tokensXpRequired;
 
     private final NamespacedKey key;
     private final NamespacedKey xpgainer;
@@ -31,7 +33,7 @@ public class XpGainerUpgrading implements Listener {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
         this.upgradingHandler = new UpgradingHandler(core);
-        this.essence = new Essence(core);
+        this.tokens = new Tokens(core);
 
         this.key = new NamespacedKey(core, "hoe");
         this.xpgainer = new NamespacedKey(core, "xpgainer");
@@ -63,14 +65,18 @@ public class XpGainerUpgrading implements Listener {
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;
         ItemMeta meta = event.getCurrentItem().getItemMeta();
         if (!meta.getPersistentDataContainer().has(xpgainer, PersistentDataType.STRING)) return;
-        int levelsRequired = enchantProfile.getTokenGrabberLevel(player) * 30;
-        if (essence.getEssence(player) >= levelsRequired) {
+        tokensXpRequired = enchantProfile.getXpGainerLevel(player) * 30;
+        if (tokens.getTokens(player) >= tokensXpRequired) {
             enchantProfile.addXpGainerLevel(player, 1);
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.essence-upgrade")));
-            essence.removeEssence(player, levelsRequired);
+            tokens.removeTokens(player, tokensXpRequired);
             upgradingHandler.loopInventory(player);
         } else {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.insufficient-amount")));
         }
+    }
+
+    public int getTokensXpRequired() {
+        return tokensXpRequired;
     }
 }

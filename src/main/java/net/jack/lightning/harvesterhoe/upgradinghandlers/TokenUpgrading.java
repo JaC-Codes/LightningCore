@@ -20,8 +20,8 @@ public class TokenUpgrading implements Listener {
     private final LightningCore core;
     private final EnchantProfile enchantProfile;
     private final Essence essence;
-    private final HoeMenu hoeMenu;
     private final UpgradingHandler upgradingHandler;
+    private int essenceRequired;
 
     private final NamespacedKey tokenGrab;
     private final NamespacedKey key;
@@ -30,7 +30,6 @@ public class TokenUpgrading implements Listener {
         this.core = core;
         this.enchantProfile = new EnchantProfile(core);
         this.essence = new Essence(core);
-        this.hoeMenu = new HoeMenu(core);
         this.upgradingHandler = new UpgradingHandler(core);
 
         this.tokenGrab = new NamespacedKey(core, "tokengrab");
@@ -45,15 +44,19 @@ public class TokenUpgrading implements Listener {
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;
         ItemMeta meta = event.getCurrentItem().getItemMeta();
         if (!meta.getPersistentDataContainer().has(tokenGrab, PersistentDataType.STRING)) return;
-        int levelsRequired = enchantProfile.getTokenGrabberLevel(player) * 100;
-        if (essence.getEssence(player) >= levelsRequired) {
+        essenceRequired = enchantProfile.getTokenGrabberLevel(player) * 100;
+        if (essence.getEssence(player) >= essenceRequired) {
             enchantProfile.addTokenGrabberLevel(player, 1);
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.token-upgrade")));
-            essence.removeEssence(player, levelsRequired);
+            essence.removeEssence(player, essenceRequired);
             upgradingHandler.loopInventory(player);
 
         } else {
             player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.insufficient-amount")));
         }
+    }
+
+    public int getEssenceRequired() {
+        return essenceRequired;
     }
 }
