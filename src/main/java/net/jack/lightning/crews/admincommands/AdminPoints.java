@@ -23,139 +23,62 @@ public class AdminPoints implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (!(sender.hasPermission("spartancore.admin"))) return false;
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args.length == 0) {
-                usage(player);
-            } else if (args[0].equalsIgnoreCase("set")) {
-                if (args.length == 1) {
-                    usage(player);
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    if (args.length == 2) {
-                        usage(player);
-                    } else {
-                        int amount = Integer.parseInt(args[2]);
-                        if (target.getPlayer() == null) {
-                            sender.sendMessage(CC.translate("&7Player is not online"));
-                        }
-                        crewUser.setUserPoints(target.getPlayer(), amount);
-                        player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Send")
-                                .replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("add")) {
-                if (args.length == 1) {
-                    usage(player);
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    if (args.length == 2) {
-                        usage(player);
-                    } else {
-                        int amount = Integer.parseInt(args[2]);
-                        if (target.getPlayer() == null) {
-                            sender.sendMessage(CC.translate("&7Player is not online"));
-                        }
-                        crewUser.addUserPoints(target.getPlayer(), amount);
-                        player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Add")
-                                .replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                        target.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Received").replace("%amount%", String.valueOf(amount))));
-                        ;
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("remove")) {
-                if (args.length == 1) {
-                    usage(player);
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    if (args.length == 2) {
-                        usage(player);
-                    } else {
-                        int amount = Integer.parseInt(args[2]);
-                        if (target.getPlayer() == null) {
-                            sender.sendMessage(CC.translate("&7Player is not online"));
-                        }
-                        crewUser.removeUserPoints(target.getPlayer(), amount);
-                        player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Remove")
-                                .replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("check")) {
-                if (args.length == 1) {
-                    usage(player);
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    assert target != null;
+        int amount = Integer.parseInt(args[2]);
+        Player target = Bukkit.getPlayerExact(args[1]);
+
+        if (sender instanceof Player player) {
+
+            switch (args[0]) {
+                case "set":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
                         sender.sendMessage(CC.translate("&7Player is not online"));
                     }
-                    int gold = crewUser.getUserPoints(target.getPlayer());
-                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-View")
+                    crewUser.setUserPoints(target.getPlayer(), amount);
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Send")
                             .replace("%player%", target.getName())
-                            .replace("%amount%", String.valueOf(gold))));
-                }
-            }
-        } else {
-            if (args.length == 0) {
-            } else if (args[0].equalsIgnoreCase("set")) {
-                if (args.length == 1) {
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    if (args.length == 2) {
-                    } else {
-                        int amount = Integer.parseInt(args[2]);
-                        assert target != null;
-                        if (target.getPlayer() == null) {
-                            sender.sendMessage(CC.translate("&7Player is not online"));
-                        }
-                        crewUser.setUserPoints(target.getPlayer(), amount);
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("add")) {
-                if (args.length == 1) {
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    if (args.length == 2) {
-                    } else {
-                        int amount = Integer.parseInt(args[2]);
-                        assert target != null;
-                        if (target.getPlayer() == null) {
-                            sender.sendMessage(CC.translate("&7Player is not online"));
-                        }
-                        crewUser.addUserPoints(target.getPlayer(), amount);
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("remove")) {
-                if (args.length == 1) {
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
-                    if (args.length == 2) {
-                    } else {
-                        int amount = Integer.parseInt(args[2]);
-                        if (target.getPlayer() == null) {
-                            sender.sendMessage(CC.translate("&7Player is not online"));
-                        }
-                        crewUser.removeUserPoints(target.getPlayer(), amount);
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("check")) {
-                if (args.length == 1) {
-                } else {
-                    Player target = Bukkit.getPlayerExact(args[1]);
+                            .replace("%amount%", String.valueOf(amount))));
+
+                case "add":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
                         sender.sendMessage(CC.translate("&7Player is not online"));
                     }
-                    int gold = crewUser.getUserPoints(target.getPlayer());
-                }
+                    crewUser.addUserPoints(target.getPlayer(), amount);
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Add")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(amount))));
+                    target.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Received"))
+                            .replace("%amount%", String.valueOf(amount)));
+
+                case "remove":
+                    argsCheck(player, args);
+                    if (target.getPlayer() == null) {
+                        sender.sendMessage(CC.translate("&7Player is not online"));
+                    }
+                    crewUser.removeUserPoints(target.getPlayer(), amount);
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Remove")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(amount))));
+
+                case "check":
+                    if (args.length == 1) {
+                        usage(player);
+                    } else {
+                        if (target.getPlayer() == null) {
+                            sender.sendMessage(CC.translate("&7Player is not online"));
+                        }
+                        int gold = crewUser.getUserPoints(target.getPlayer());
+                        player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-View")
+                                .replace("%player%", target.getName())
+                                .replace("%amount%", String.valueOf(gold))));
+                    }
             }
         }
-
-        return true;
+        return false;
     }
 
     public void usage(Player player) {
@@ -163,5 +86,17 @@ public class AdminPoints implements CommandExecutor {
             player.sendMessage(CC.translate(i));
         }
     }
+
+    public void argsCheck(Player player, String[] args) {
+        if (args.length == 1) {
+            usage(player);
+        } else {
+            if (args.length == 2) {
+                usage(player);
+            }
+        }
+    }
 }
+
+
 
