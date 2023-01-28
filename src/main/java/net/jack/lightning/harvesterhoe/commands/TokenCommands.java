@@ -29,94 +29,72 @@ public class TokenCommands extends SubCommand {
     public void perform(Player player, String[] args) {
         if (!(player.hasPermission("spartancore.admin"))) return;
 
-        if (args.length == 1) {
+        if (args.length == 0) {
             tokens.usage(player);
-        } else if (args[1].equalsIgnoreCase("set")) {
-            if (args.length == 2) {
-                tokens.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                if (args.length == 3) {
-                    tokens.usage(player);
-                } else {
-                    int amount = Integer.parseInt(args[3]);
+            return;
+        }
+
+        if (args.length == 3) {
+            Player target = Bukkit.getPlayerExact(args[1]);
+            int amount = Integer.parseInt(args[2]);
+
+
+            switch (args[0]) {
+
+                case "set":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
-                        player.sendMessage(CC.translate("&7Player is not online"));
+                        target.sendMessage(CC.translate("&7Player is not online"));
                     }
                     tokens.setTokens(target.getPlayer(), amount);
-                    if (amount == 1) {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Token-Set").replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                    } else {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Tokens-Set")
-                                .replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                    }
-                }
-            }
-        } else if (args[1].equalsIgnoreCase("add")) {
-            if (args.length == 2) {
-                tokens.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                if (args.length == 3) {
-                    tokens.usage(player);
-                } else {
-                    int amount = Integer.parseInt(args[3]);
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Set")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(amount))));
+                    break;
+
+                case "add":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
                         player.sendMessage(CC.translate("&7Player is not online"));
                     }
                     tokens.addTokens(target.getPlayer(), amount);
-                    if (amount == 1) {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Token-Add").replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                        target.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Token-Received").replace("%amount%",
-                                String.valueOf(amount))));
-                    } else {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Tokens-Add")
-                                .replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                        target.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Tokens-Received").replace("%amount%",
-                                String.valueOf(amount))));
-                    }
-                }
-            }
-        } else if (args[1].equalsIgnoreCase("remove")) {
-            if (args.length == 2) {
-                tokens.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                if (args.length == 3) {
-                    tokens.usage(player);
-                } else {
-                    int amount = Integer.parseInt(args[3]);
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Add")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(amount))));
+                    target.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Received"))
+                            .replace("%amount%", String.valueOf(amount)));
+                    break;
+
+                case "remove":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
                         player.sendMessage(CC.translate("&7Player is not online"));
                     }
                     tokens.removeTokens(target.getPlayer(), amount);
-                    if (amount == 1) {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Token-Remove").replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
-                    } else {
-                        player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Tokens-Remove")
-                                .replace("%player%", target.getName())
-                                .replace("%amount%", String.valueOf(amount))));
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Remove")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(amount))));
+                    break;
+
+                case "check":
+                    if (target.getPlayer() == null) {
+                        player.sendMessage(CC.translate("&7Player is not online"));
                     }
-                }
+                    int tokenBal = tokens.getTokens(target.getPlayer());
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-View")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(tokenBal))));
+                    break;
             }
-        } else if (args[1].equalsIgnoreCase("check")) {
+        }
+    }
+
+    public void argsCheck(Player player, String[] args) {
+        if (args.length == 1) {
+            tokens.usage(player);
+        } else {
             if (args.length == 2) {
                 tokens.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                assert target != null;
-                if (target.getPlayer() == null) {
-                    player.sendMessage(CC.translate("&7Player is not online"));
-                }
-                int toks = tokens.getTokens(target.getPlayer());
-                player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Tokens-Check")
-                        .replace("%player%", target.getName())
-                        .replace("%amount%", String.valueOf(toks))));
             }
         }
     }

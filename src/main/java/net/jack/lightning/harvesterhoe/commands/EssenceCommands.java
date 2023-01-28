@@ -27,77 +27,72 @@ public class EssenceCommands extends SubCommand {
     public void perform(Player player, String[] args) {
         if (!(player.hasPermission("spartancore.admin"))) return;
 
-        if (args.length == 1) {
+        if (args.length == 0) {
             essence.usage(player);
-        } else if (args[1].equalsIgnoreCase("set")) {
-            if (args.length == 2) {
-                essence.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                if (args.length == 3) {
-                    essence.usage(player);
-                } else {
-                    int amount = Integer.parseInt(args[3]);
+            return;
+        }
+
+        if (args.length == 3) {
+            Player target = Bukkit.getPlayerExact(args[1]);
+            int amount = Integer.parseInt(args[2]);
+
+
+            switch (args[0]) {
+
+                case "set":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
-                        player.sendMessage(CC.translate("&7Player is not online"));
+                        target.sendMessage(CC.translate("&7Player is not online"));
                     }
                     essence.setEssence(target.getPlayer(), amount);
-                    player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Essence-Set")
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Set")
                             .replace("%player%", target.getName())
                             .replace("%amount%", String.valueOf(amount))));
-                }
-            }
-        } else if (args[1].equalsIgnoreCase("add")) {
-            if (args.length == 2) {
-                essence.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                if (args.length == 3) {
-                    essence.usage(player);
-                } else {
-                    int amount = Integer.parseInt(args[3]);
+                    break;
+
+                case "add":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
                         player.sendMessage(CC.translate("&7Player is not online"));
                     }
                     essence.addEssence(target.getPlayer(), amount);
-                    player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Essence-Add")
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Add")
                             .replace("%player%", target.getName())
                             .replace("%amount%", String.valueOf(amount))));
-                    target.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Essence-Received").replace("%amount%",
-                            String.valueOf(amount))));
-                }
-            }
-        } else if (args[1].equalsIgnoreCase("remove")) {
-            if (args.length == 2) {
-                essence.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                if (args.length == 3) {
-                    essence.usage(player);
-                } else {
-                    int amount = Integer.parseInt(args[3]);
+                    target.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Received"))
+                            .replace("%amount%", String.valueOf(amount)));
+                    break;
+
+                case "remove":
+                    argsCheck(player, args);
                     if (target.getPlayer() == null) {
                         player.sendMessage(CC.translate("&7Player is not online"));
                     }
                     essence.removeEssence(target.getPlayer(), amount);
-                    player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Essence-Remove")
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-Remove")
                             .replace("%player%", target.getName())
                             .replace("%amount%", String.valueOf(amount))));
-                }
+                    break;
+
+                case "check":
+                    if (target.getPlayer() == null) {
+                        player.sendMessage(CC.translate("&7Player is not online"));
+                    }
+                    int essenceBal = essence.getEssence(target.getPlayer());
+                    player.sendMessage(CC.translate(this.core.getConfig().getString("Messages.Points-View")
+                            .replace("%player%", target.getName())
+                            .replace("%amount%", String.valueOf(essenceBal))));
+                    break;
             }
-        } else if (args[1].equalsIgnoreCase("check")) {
+        }
+    }
+
+    public void argsCheck(Player player, String[] args) {
+        if (args.length == 1) {
+            essence.usage(player);
+        } else {
             if (args.length == 2) {
                 essence.usage(player);
-            } else {
-                Player target = Bukkit.getPlayerExact(args[2]);
-                assert target != null;
-                if (target.getPlayer() == null) {
-                    player.sendMessage(CC.translate("&7Player is not online"));
-                }
-                int ess = essence.getEssence(target.getPlayer());
-                player.sendMessage(CC.translate(this.core.getHarvesterHoeConfiguration().getString("Messages.Essence-Check")
-                        .replace("%player%", target.getName())
-                        .replace("%amount%", String.valueOf(ess))));
             }
         }
     }
